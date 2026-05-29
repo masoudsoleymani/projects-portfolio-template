@@ -1,7 +1,13 @@
 ---
 import SiteIntro from './SiteIntro.astro';
+import ThemeSwitcher from './ThemeSwitcher.astro';
 ---
 
-<header class="mb-8 flex flex-col lg:hidden">
-  <SiteIntro variant="mobile" />
+<header class="mb-8 flex flex-row items-start justify-between lg:hidden">
+  <div class="flex-1">
+    <SiteIntro variant="mobile" />
+  </div>
+  <div class="shrink-0">
+    <ThemeSwitcher />
+  </div>
 </header>

@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<button
+  id="theme-switcher-button"
+  class="subtle-link inline-flex items-center gap-2 rounded px-3 py-2 text-sm font-medium transition-colors duration-200"
+  aria-label="Switch theme"
+  title="Click to change theme"
+>
+  <Icon name="ph:paint-bucket" class="h-5 w-5" />
+  <span id="theme-name-display">Theme</span>
+</button>
+
+<script>
+  import {
+    getCurrentTheme,
+    setTheme,
+    getNextTheme,
+  } from '@/scripts/theme';
+
+  function initThemeSwitcher() {
+    const button = document.getElementById('theme-switcher-button');
+    const themeDisplay = document.getElementById('theme-name-display');
+
+    if (!button || !themeDisplay) return;
+
+    // Initialize display with current theme
+    const updateDisplay = () => {
+      const current = getCurrentTheme();
+      themeDisplay.textContent = current.charAt(0).toUpperCase() + current.slice(1);
+    };
+
+    updateDisplay();
+
+    // Handle button click
+    button.addEventListener('click', () => {
+      const nextTheme = getNextTheme();
+      setTheme(nextTheme);
+      updateDisplay();
+    });
+
+    // Listen for theme changes from other tabs
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'theme') {
+        updateDisplay();
+      }
+    });
+
+    // Listen for custom theme-changed event
+    window.addEventListener('theme-changed', () => {
+      updateDisplay();
+    });
+  }
+
+  initThemeSwitcher();
+</script>
+
+<style>
+  button:hover {
+    background-color: color-mix(in srgb, var(--color-accent), transparent 90%);
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>

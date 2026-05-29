@@ -34,6 +34,14 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Smooth transitions for all theme-dependent properties */
+  * {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: background-color 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
