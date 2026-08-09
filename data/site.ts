@@ -1,5 +1,5 @@
-import { experiences } from "./exp";
-import { projects } from "./projects";
+import { experiences } from "@data/exp";
+import { projects } from "@data/projects";
 /**
  * ============================================
  * PAGE CONTENT DATA
@@ -47,7 +47,7 @@ export const site = {
   },
   experiences: experiences,
   featuredProjects: projects,
-  
+
   projectArchivePage: {
     title: "All projects",
     description:
