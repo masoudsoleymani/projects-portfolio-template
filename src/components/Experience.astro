@@ -1,5 +1,9 @@
 ---
 import { site } from '../../data/site';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <section id="experiences" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="experience-heading">
@@ -7,12 +11,38 @@ import { site } from '../../data/site';
   <div class="space-y-4">
     {
       site.experiences.map((item) => (
-        <article class="scroll-stat panel-card group grid gap-4 md:grid-cols-[9rem_1fr] md:gap-6">
+        <a
+          href={item.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="scroll-stat panel-card group grid gap-4 no-underline md:grid-cols-[9rem_1fr] md:gap-6"
+          aria-label={`Ver repositorio de ${item.title} en GitHub`}
+        >
           <p class="pt-1 font-mono text-xs uppercase tracking-wider text-slate">{item.period}</p>
           <div class="space-y-3">
-            <h3 class="text-base font-semibold text-slate uppercase">
-              {item.title} · {item.company}
-            </h3>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-base font-semibold text-slate uppercase">
+                {item.title} · {item.organization}
+              </h3>
+              {item.type && (
+                <span class="rounded-full border border-accent/40 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-accent">
+                  {item.type}
+                </span>
+              )}
+            </div>
+
+            {item.image && (
+              <div class="w-full max-w-3xl overflow-hidden rounded-xl">
+                <img
+                  src={`${base}${item.image}`}
+                  alt={`${item.title} preview`}
+                  class="h-48 w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+
             <p class="body-copy">{item.summary}</p>
             <ul class="list-disc space-y-1 pl-5 text-sm text-slate">
               {item.highlights.map((point) => <li>{point}</li>)}
@@ -21,7 +51,7 @@ import { site } from '../../data/site';
               {item.tech.map((tech) => <li class="font-mono text-xs text-accent">{tech}</li>)}
             </ul>
           </div>
-        </article>
+        </a>
       ))
     }
   </div>

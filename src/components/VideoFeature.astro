@@ -1,0 +1,33 @@
+---
+const youtubeId = 'r_P0CXm0qII';
+---
+
+<section id="video" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="video-heading">
+  <h2 id="video-heading" class="section-heading">Video</h2>
+  <div class="reveal-content mt-8">
+    <div class="panel-card overflow-hidden p-0">
+      {
+        youtubeId ? (
+          <div class="aspect-video w-full">
+            <iframe
+              class="h-full w-full border-0"
+              src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+              title="Video de presentación"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            />
+          </div>
+        ) : (
+          <div class="flex aspect-video w-full flex-col items-center justify-center gap-2 bg-black/30 text-center text-sm text-slate">
+            <p class="font-semibold text-white-soft">Aún no hay video cargado</p>
+            <p class="max-w-xs text-xs opacity-70">
+              Sube tu video a YouTube como "No listado" y define{' '}
+              <code>youtubeId</code> en <code>VideoFeature.astro</code>.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

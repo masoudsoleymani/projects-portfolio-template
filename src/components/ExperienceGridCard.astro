@@ -1,0 +1,37 @@
+---
+import type { site } from '../../data/site';
+
+type ExperienceItem = (typeof site.experiences)[number];
+
+interface Props {
+  item: ExperienceItem;
+}
+
+const { item } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<a href={item.repoUrl} target="_blank" rel="noopener noreferrer" class="panel-card group flex h-full flex-col gap-4 no-underline" aria-label={`Ver repositorio de ${item.title} en GitHub`}>
+  <p class="font-mono text-xs uppercase tracking-wider text-slate">{item.period}</p>
+
+  <div class="flex flex-wrap items-center gap-2">
+    <h3 class="text-base font-semibold text-slate uppercase">{item.title} · {item.organization}</h3>
+    {item.type && <span class="rounded-full border border-accent/40 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-accent">{item.type}</span>}
+  </div>
+
+  {item.image && (
+    <div class="w-full overflow-hidden rounded-xl">
+      <img src={`${base}${item.image}`} alt={`${item.title} preview`} class="h-40 w-full object-cover" loading="lazy" decoding="async" />
+    </div>
+  )}
+
+  <p class="body-copy">{item.summary}</p>
+
+  <ul class="list-disc space-y-1 pl-5 text-sm text-slate">
+    {item.highlights.map((point) => <li>{point}</li>)}
+  </ul>
+
+  <ul class="mt-auto flex flex-wrap gap-3 pt-1">
+    {item.tech.map((tech) => <li class="font-mono text-xs text-accent">{tech}</li>)}
+  </ul>
+</a>

@@ -1,0 +1,43 @@
+---
+import ArchiveLayout from '../layouts/ArchiveLayout.astro';
+import ModelCard from '../components/ModelCard.astro';
+import { models } from '../../data/models';
+import { site } from '@data/site';
+import { Icon } from 'astro-icon/components';
+
+const title = `Modelado | ${site.hero.name}`;
+const description = `Modelos entidad-relación de ${site.hero.name}.`;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const homeHref = base;
+---
+
+<ArchiveLayout title={title} description={description}>
+  <p class="mb-8">
+    <a href={homeHref} class="group flex items-center gap-2 text-sm text-accent transition hover:text-slate-light" data-astro-prefetch>
+      <Icon name="ph:arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+      {site.hero.name}
+    </a>
+  </p>
+
+  <h1 class="mb-4 text-4xl font-bold tracking-tight text-white sm:text-4xl">Modelado</h1>
+
+  <p class="mb-10 max-w-prose body-copy">
+    Modelos entidad-relación desarrollados para la clase de Bases de Datos. Dale clic a una imagen para verla en grande.
+  </p>
+
+  {
+    models.length > 0 ? (
+      <div class="grid gap-8 sm:grid-cols-2">
+        {models.map((item) => <ModelCard item={item} />)}
+      </div>
+    ) : (
+      <div class="panel-card flex flex-col items-center gap-2 py-16 text-center">
+        <p class="font-semibold text-slate">Aún no hay modelos cargados</p>
+        <p class="max-w-sm text-sm text-slate-light">
+          Guarda la imagen del diagrama en <code>public/models/</code> y agrega la entrada en{' '}
+          <code>data/models.ts</code> para que aparezca aquí.
+        </p>
+      </div>
+    )
+  }
+</ArchiveLayout>

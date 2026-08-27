@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { site } from '@data/site';
 import SideNav from '../components/SideNav.astro';
 import MobileHeader from '../components/MobileHeader.astro';
+import TopBar from '../components/TopBar.astro';
 import { ClientRouter } from 'astro:transitions';
 import { SITE_CONFIG } from '../config.ts';
 
@@ -61,6 +62,8 @@ const defaultTheme = `${baseTheme}-dark`;
     </script>
   </head>
   <body class="min-h-screen bg-background text-maintext antialiased selection:bg-accent/30 selection:text-background">
+    <a id="top"></a>
+    <TopBar />
     <div
       class="mx-auto flex min-h-screen max-w-6xl flex-col lg:flex-row lg:gap-6 lg:px-12 xl:max-w-7xl xl:gap-0"
     >
