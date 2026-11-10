@@ -1,0 +1,45 @@
+---
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import ModelCard from '../../components/ModelCard.astro';
+import { models } from '../../../data/models';
+import { modelFolders } from '../../../data/model-folders';
+import { site } from '@data/site';
+import { Icon } from 'astro-icon/components';
+
+const folder = modelFolders.find((f) => f.slug === 'er')!;
+const items = models.filter((m) => m.category === 'er');
+
+const title = `${folder.title} | ${site.hero.name}`;
+const description = `${folder.title} de ${site.hero.name}.`;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<ArchiveLayout title={title} description={description}>
+  <p class="mb-8">
+    <a href={`${base}modelado`} class="group flex items-center gap-2 text-sm text-accent transition hover:text-slate-light" data-astro-prefetch>
+      <Icon name="ph:arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+      Modelado
+    </a>
+  </p>
+
+  <h1 class="mb-4 text-4xl font-bold tracking-tight text-white sm:text-4xl">{folder.title}</h1>
+
+  <p class="mb-10 max-w-prose body-copy">
+    {folder.description} Dale clic a una imagen para verla en grande.
+  </p>
+
+  {
+    items.length > 0 ? (
+      <div class="grid gap-8 sm:grid-cols-2">
+        {items.map((item) => <ModelCard item={item} />)}
+      </div>
+    ) : (
+      <div class="panel-card flex flex-col items-center gap-2 py-16 text-center">
+        <p class="font-semibold text-slate">Aún no hay modelos en esta carpeta</p>
+        <p class="max-w-sm text-sm text-slate-light">
+          Agrega una entrada con <code>category: 'er'</code> en <code>data/models.ts</code> para que aparezca aquí.
+        </p>
+      </div>
+    )
+  }
+</ArchiveLayout>

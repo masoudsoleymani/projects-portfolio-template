@@ -1,0 +1,129 @@
+---
+import type { NormalizationStep } from '../../data/normalization';
+
+interface Props {
+  steps: NormalizationStep[];
+}
+
+const { steps } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const src = (path: string) => `${base}${path.replace(/^\//, '')}`;
+---
+
+<div data-stepper class="flex flex-col gap-6">
+  <ol class="flex flex-wrap gap-2" role="tablist">
+    {steps.map((step, i) => (
+      <li>
+        <button type="button" role="tab" data-step-tab={i} class="stepper-tab" aria-selected={i === 0 ? 'true' : 'false'}>
+          <span class="font-mono text-[0.65rem] opacity-70">{i + 1}</span>
+          {step.label}
+        </button>
+      </li>
+    ))}
+  </ol>
+
+  <div class="panel-card flex flex-col gap-5">
+    {steps.map((step, i) => (
+      <div data-step-panel={i} hidden={i !== 0} class="flex flex-col gap-5">
+        <a href={src(step.image)} target="_blank" rel="noopener noreferrer" class="block overflow-x-auto rounded-md bg-black/20 p-2" title="Abrir imagen en grande">
+          <img src={src(step.image)} alt={`${step.label}`} class="mx-auto h-auto max-w-full" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+        </a>
+        <div>
+          <h3 class="mb-2 text-base font-semibold text-slate uppercase">{step.label}</h3>
+          <p class="body-copy whitespace-pre-line text-sm">{step.explanation}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="flex items-center justify-between">
+    <button type="button" data-step-prev class="stepper-nav">← Anterior</button>
+    <span data-step-counter class="font-mono text-xs uppercase tracking-wider text-slate-light"></span>
+    <button type="button" data-step-next class="stepper-nav">Siguiente →</button>
+  </div>
+</div>
+
+<style is:global>
+  .stepper-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid color-mix(in srgb, white, transparent 85%);
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-maintext);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .stepper-tab:hover {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent), transparent 60%);
+  }
+
+  .stepper-tab[aria-selected='true'] {
+    color: var(--color-background);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .stepper-nav {
+    border: 1px solid color-mix(in srgb, var(--color-accent), transparent 60%);
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .stepper-nav:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-accent), transparent 90%);
+  }
+
+  .stepper-nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+</style>
+
+<script>
+  function setupSteppers() {
+    document.querySelectorAll<HTMLElement>('[data-stepper]').forEach((root) => {
+      if (root.dataset.bound === 'true') return;
+      root.dataset.bound = 'true';
+
+      const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-step-tab]'));
+      const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-step-panel]'));
+      const prev = root.querySelector<HTMLButtonElement>('[data-step-prev]');
+      const next = root.querySelector<HTMLButtonElement>('[data-step-next]');
+      const counter = root.querySelector<HTMLElement>('[data-step-counter]');
+      let current = 0;
+
+      function show(index: number) {
+        current = Math.max(0, Math.min(index, panels.length - 1));
+        tabs.forEach((tab, i) => tab.setAttribute('aria-selected', String(i === current)));
+        panels.forEach((panel, i) => {
+          panel.hidden = i !== current;
+        });
+        if (prev) prev.disabled = current === 0;
+        if (next) next.disabled = current === panels.length - 1;
+        if (counter) counter.textContent = `Paso ${current + 1} de ${panels.length}`;
+      }
+
+      tabs.forEach((tab, i) => tab.addEventListener('click', () => show(i)));
+      prev?.addEventListener('click', () => show(current - 1));
+      next?.addEventListener('click', () => show(current + 1));
+      show(0);
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupSteppers);
+</script>

@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { ModelFolder } from '../../data/model-folders';
+
+interface Props {
+  folder: ModelFolder;
+  count: number;
+}
+
+const { folder, count } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<a href={`${base}modelado/${folder.slug}`} class="panel-card group flex flex-col items-center gap-3 py-10 text-center no-underline" data-astro-prefetch>
+  <Icon name={folder.icon} class="h-14 w-14 text-accent transition-transform group-hover:scale-110" />
+  <h3 class="text-base font-semibold text-slate uppercase">{folder.title}</h3>
+  <p class="max-w-xs text-sm text-slate-light">{folder.description}</p>
+  <span class="mt-1 font-mono text-xs uppercase tracking-wider text-accent">
+    {count} {count === 1 ? 'modelo' : 'modelos'}
+  </span>
+</a>

@@ -1,0 +1,106 @@
+---
+import type { ModelItem } from '../../data/models';
+
+interface Props {
+  item: ModelItem;
+}
+
+const { item } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const imageSrc = `${base}${item.image.replace(/^\//, '')}`;
+const dialogId = `model-dialog-${item.id}`;
+---
+
+<div class="panel-card flex h-full flex-col gap-4 p-0 overflow-hidden">
+  <button type="button" class="group block w-full cursor-zoom-in border-0 bg-transparent p-0" data-open-dialog={dialogId} aria-label={`Ampliar ${item.title}`}>
+    <div class="aspect-video w-full overflow-hidden bg-black/20">
+      <img src={imageSrc} alt={item.title} class="h-full w-full object-contain transition duration-200 group-hover:scale-[1.02]" loading="lazy" decoding="async" />
+    </div>
+  </button>
+
+  <div class="flex flex-1 flex-col gap-2 p-6 pt-0">
+    <div class="flex flex-wrap items-center gap-2">
+      <h3 class="text-base font-semibold text-slate uppercase">{item.title}</h3>
+      {item.date && <span class="rounded-full border border-accent/40 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-accent">{item.date}</span>}
+    </div>
+    {item.description && <p class="body-copy text-sm">{item.description}</p>}
+  </div>
+</div>
+
+<dialog id={dialogId} class="model-dialog">
+  <button type="button" class="model-dialog-close" data-close-dialog={dialogId} aria-label="Cerrar">✕</button>
+  <img src={imageSrc} alt={item.title} />
+</dialog>
+
+<style>
+  .model-dialog {
+    max-width: 92vw;
+    max-height: 92vh;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .model-dialog::backdrop {
+    background: color-mix(in srgb, black, transparent 15%);
+    backdrop-filter: blur(4px);
+  }
+
+  .model-dialog img {
+    display: block;
+    max-width: 92vw;
+    max-height: 92vh;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .model-dialog-close {
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-size: 0.9rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<script>
+  function setupModelDialogs() {
+    document.querySelectorAll<HTMLButtonElement>('[data-open-dialog]').forEach((btn) => {
+      const id = btn.getAttribute('data-open-dialog');
+      const dialog = id ? document.getElementById(id) : null;
+      if (!dialog || !(dialog instanceof HTMLDialogElement)) return;
+
+      btn.addEventListener('click', () => dialog.showModal());
+
+      dialog.addEventListener('click', (e) => {
+        const rect = dialog.getBoundingClientRect();
+        const clickedOutside =
+          e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
+        if (clickedOutside) dialog.close();
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-close-dialog]').forEach((btn) => {
+      const id = btn.getAttribute('data-close-dialog');
+      const dialog = id ? document.getElementById(id) : null;
+      btn.addEventListener('click', () => {
+        if (dialog instanceof HTMLDialogElement) dialog.close();
+      });
+    });
+  }
+
+  setupModelDialogs();
+  document.addEventListener('astro:page-load', setupModelDialogs);
+</script>

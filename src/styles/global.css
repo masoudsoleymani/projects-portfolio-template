@@ -12,7 +12,7 @@
   --color-slate: var(--color-maintext);
   --color-slate-light: var(--color-subtext);
   --color-slate-lightest: var(--color-textrain);
-  --color-white-soft: var(--color-background);
+  --color-white-soft: color-mix(in srgb, var(--color-background), white 8%);
   --color-accent: var(--color-accent);
   --color-footer-muted: var(--color-subtext);
 
@@ -86,7 +86,12 @@
   }
 
   .panel-card {
-    @apply rounded-md bg-white-soft p-6 transition duration-200;
+    @apply rounded-md border border-white/10 bg-white-soft p-6 shadow-lg shadow-black/20 transition duration-200;
+  }
+
+  a.panel-card:hover,
+  a.panel-card:focus-visible {
+    @apply border-accent/40 bg-white/5;
   }
 }
 

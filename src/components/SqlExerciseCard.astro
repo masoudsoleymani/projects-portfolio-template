@@ -1,0 +1,92 @@
+---
+import { Code } from 'astro:components';
+import type { SqlExercise } from '../../data/sql';
+
+interface Props {
+  exercise: SqlExercise;
+  index: number;
+}
+
+const { exercise, index } = Astro.props;
+
+// Convierte `texto` en <code>texto</code> dentro del enunciado.
+const lines = exercise.statement.split('\n').map((line) =>
+  line.split('`').map((chunk, i) => ({ text: chunk, code: i % 2 === 1 })),
+);
+---
+
+<article class="panel-card flex flex-col gap-5" data-sql-exercise>
+  <header class="flex flex-wrap items-center gap-3">
+    <span class="font-mono text-xs uppercase tracking-wider text-accent">Ejercicio {index + 1}</span>
+  </header>
+
+  <section class="rounded-md border-l-2 border-accent bg-black/20 p-4">
+    <h3 class="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">Enunciado</h3>
+    <div class="space-y-1">
+      {lines.map((parts) => (
+        <p class="body-copy text-sm">
+          {parts.map((p) => (p.code ? <code class="rounded bg-white/10 px-1 py-0.5 text-[0.8em]">{p.text}</code> : p.text))}
+        </p>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <div class="mb-2 flex items-center justify-between">
+      <h3 class="text-xs font-semibold uppercase tracking-widest text-accent">Solución (SQL · Oracle)</h3>
+      <button type="button" class="sql-copy" data-sql-copy data-code={exercise.code}>Copiar</button>
+    </div>
+    <div class="sql-code overflow-auto rounded-md text-sm">
+      <Code code={exercise.code.trimEnd()} lang="sql" theme="github-dark" />
+    </div>
+  </section>
+</article>
+
+<style is:global>
+  .sql-code {
+    max-height: 28rem;
+  }
+  .sql-code pre {
+    margin: 0;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+  .sql-copy {
+    border: 1px solid color-mix(in srgb, var(--color-accent), transparent 60%);
+    border-radius: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  .sql-copy:hover {
+    background: color-mix(in srgb, var(--color-accent), transparent 90%);
+  }
+</style>
+
+<script>
+  function setupSqlCopy() {
+    document.querySelectorAll<HTMLButtonElement>('[data-sql-copy]').forEach((btn) => {
+      if (btn.dataset.bound === 'true') return;
+      btn.dataset.bound = 'true';
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.code ?? '');
+          btn.textContent = '¡Copiado!';
+        } catch {
+          btn.textContent = 'No se pudo copiar';
+        }
+        setTimeout(() => (btn.textContent = 'Copiar'), 1800);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupSqlCopy);
+</script>

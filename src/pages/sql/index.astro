@@ -1,0 +1,30 @@
+---
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import SqlFolderCard from '../../components/SqlFolderCard.astro';
+import { sqlFolders } from '../../../data/sql';
+import { site } from '@data/site';
+import { Icon } from 'astro-icon/components';
+
+const title = `SQL | ${site.hero.name}`;
+const description = `Ejercicios de SQL (Oracle) de ${site.hero.name}.`;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<ArchiveLayout title={title} description={description}>
+  <p class="mb-8">
+    <a href={base} class="group flex items-center gap-2 text-sm text-accent transition hover:text-slate-light" data-astro-prefetch>
+      <Icon name="ph:arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+      {site.hero.name}
+    </a>
+  </p>
+
+  <h1 class="mb-4 text-4xl font-bold tracking-tight text-white sm:text-4xl">SQL</h1>
+
+  <p class="mb-10 max-w-prose body-copy">
+    Ejercicios de práctica sobre el esquema HR de Oracle, organizados por tema. Dale clic a una carpeta para ver los enunciados y sus soluciones.
+  </p>
+
+  <div class="grid gap-8 sm:grid-cols-3">
+    {sqlFolders.map((folder) => <SqlFolderCard folder={folder} />)}
+  </div>
+</ArchiveLayout>

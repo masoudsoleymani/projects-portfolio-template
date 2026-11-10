@@ -1,0 +1,51 @@
+---
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import { normalizationExercises } from '../../../data/normalization';
+import { site } from '@data/site';
+import { Icon } from 'astro-icon/components';
+
+const title = `Normalización | ${site.hero.name}`;
+const description = `Ejercicios de normalización de ${site.hero.name}.`;
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<ArchiveLayout title={title} description={description}>
+  <p class="mb-8">
+    <a href={base} class="group flex items-center gap-2 text-sm text-accent transition hover:text-slate-light" data-astro-prefetch>
+      <Icon name="ph:arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+      {site.hero.name}
+    </a>
+  </p>
+
+  <h1 class="mb-4 text-4xl font-bold tracking-tight text-white sm:text-4xl">Normalización</h1>
+
+  <p class="mb-10 max-w-prose body-copy">
+    Proceso de normalización paso a paso, desde la relación base hasta la tercera forma normal. Dale clic a un ejercicio para recorrer el paso a paso con su respectiva explicación.
+  </p>
+
+  {
+    normalizationExercises.length > 0 ? (
+      <div class="grid gap-8 sm:grid-cols-2">
+        {normalizationExercises.map((exercise) => (
+          <a href={`${base}normalizacion/${exercise.id}`} class="panel-card group flex h-full flex-col gap-3 no-underline" data-astro-prefetch>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-base font-semibold text-slate uppercase">{exercise.title}</h3>
+              {exercise.date && <span class="rounded-full border border-accent/40 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-accent">{exercise.date}</span>}
+            </div>
+            {exercise.description && <p class="body-copy text-sm">{exercise.description}</p>}
+            <ul class="mt-auto flex flex-wrap gap-3 pt-1">
+              {exercise.steps.map((step) => <li class="font-mono text-xs text-accent">{step.label}</li>)}
+            </ul>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="panel-card flex flex-col items-center gap-2 py-16 text-center">
+        <p class="font-semibold text-slate">Aún no hay ejercicios cargados</p>
+        <p class="max-w-sm text-sm text-slate-light">
+          Guarda las imágenes en <code>public/normalizacion/</code> y agrega el ejercicio en <code>data/normalization.ts</code>.
+        </p>
+      </div>
+    )
+  }
+</ArchiveLayout>

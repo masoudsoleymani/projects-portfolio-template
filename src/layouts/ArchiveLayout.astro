@@ -5,6 +5,7 @@ import { ClientRouter } from 'astro:transitions';
 import { SITE_CONFIG } from '../config.ts';
 import ContactCta from '../components/ContactCta.astro';
 import Footer from '../components/Footer.astro';
+import TopBar from '../components/TopBar.astro';
 
 interface Props {
   title?: string;
@@ -61,6 +62,7 @@ const defaultTheme = `${baseTheme}-dark`;
     </script>
   </head>
   <body class="min-h-screen bg-background text-maintext antialiased selection:bg-accent/30 selection:text-background">
+    <TopBar />
     <div class="mx-auto flex min-h-screen max-w-6xl flex-col px-4 pb-16 pt-12 sm:px-6 md:px-8 xl:max-w-7xl">
       <div class="mb-6 flex justify-end">
       </div>
