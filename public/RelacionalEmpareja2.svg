@@ -1,58 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
-  <rect width="1400" height="900" fill="#fff"/>
-  <style>
-    .title{font:700 22px Arial;fill:#111827;text-anchor:middle}.box{fill:#fff9c4;stroke:#2563eb;stroke-width:2}.head{fill:#eab308;stroke:#2563eb;stroke-width:1}.ht{font:700 16px Arial;fill:#1e3a8a;text-anchor:middle}.field{font:700 13px Arial;fill:#111827}.key{fill:#059669}.line{stroke:#334155;stroke-width:2}.rel{fill:#2563eb}.badge{fill:#16a34a}.bt{font:700 18px Arial;fill:#fff;text-anchor:middle}
-  </style>
-  <g>
-    <rect class="badge" x="1110" y="20" rx="10" width="270" height="44"/><text class="bt" x="1245" y="49">DIAGRAMA RELACIONAL · 3FN</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1492" height="829" viewBox="0 0 1492 829" role="img" aria-labelledby="title desc">
+  <title id="title">Relacional de Empareja2</title>
+  <desc id="desc">Diagrama relacional de Empareja2 con las entidades y relaciones mostradas en la imagen original.</desc>
+  <defs>
+    <style>
+      .table{fill:#ffffa8;stroke:#003cff;stroke-width:1}
+      .rule{stroke:#003cff;stroke-width:1}
+      .head{font:700 11px Arial,sans-serif;fill:#003cff;text-anchor:middle}
+      .field{font:10px Arial,sans-serif;fill:#111}
+      .dtype{font:10px Arial,sans-serif;fill:#008000}
+      .constraint{font:10px Arial,sans-serif;fill:#111}
+      .mark{font:700 9px Arial,sans-serif;fill:#003cff}
+      .star{font:700 10px Arial,sans-serif;fill:#f00}
+      .rel{fill:none;stroke:#111;stroke-width:1.2}
+      .key{fill:#f5d342;stroke:#111;stroke-width:.7}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5 0 10z" fill="#111"/></marker>
+  </defs>
+  <rect width="1492" height="829" fill="#fff"/>
+  <!-- CIUDAD -->
+  <g><rect class="table" x="28" y="10" width="231" height="96"/><text class="head" x="143.5" y="24">CIUDAD</text><line class="rule" x1="28" y1="29" x2="259" y2="29"/>
+    <text class="mark" x="31" y="42">P</text><text class="star" x="42" y="42">*</text><text class="field" x="54" y="42">id_ciudad</text><text class="dtype" x="148" y="42">NUMBER (10)</text>
+    <text class="star" x="42" y="58">*</text><text class="field" x="54" y="58">nombre_ciudad</text><text class="dtype" x="148" y="58">VARCHAR2 (80)</text>
+    <text class="star" x="42" y="73">*</text><text class="field" x="54" y="73">departamento</text><text class="dtype" x="148" y="73">VARCHAR2 (80)</text><line class="rule" x1="28" y1="76" x2="259" y2="76"/><text class="constraint" x="42" y="91">🔑 CIUDAD_PK (id_ciudad)</text></g>
+  <!-- UNIVERSIDAD -->
+  <g><rect class="table" x="350" y="13" width="285" height="161"/><text class="head" x="492.5" y="27">UNIVERSIDAD</text><line class="rule" x1="350" y1="32" x2="635" y2="32"/>
+    <text class="mark" x="353" y="44">P</text><text class="star" x="364" y="44">*</text><text class="field" x="376" y="44">id_universidad</text><text class="dtype" x="494" y="44">NUMBER (10)</text>
+    <text class="star" x="364" y="60">*</text><text class="field" x="376" y="60">nombre_universidad</text><text class="dtype" x="494" y="60">VARCHAR2 (150)</text>
+    <text class="star" x="364" y="76">*</text><text class="field" x="376" y="76">sigla</text><text class="dtype" x="494" y="76">VARCHAR2 (20)</text>
+    <text class="star" x="364" y="92">*</text><text class="field" x="376" y="92">calle</text><text class="dtype" x="494" y="92">VARCHAR2 (100)</text>
+    <text class="star" x="364" y="108">*</text><text class="field" x="376" y="108">barrio</text><text class="dtype" x="494" y="108">VARCHAR2 (100)</text>
+    <text class="mark" x="353" y="121">PF</text><text class="star" x="370" y="121">*</text><text class="field" x="382" y="121">CIUDAD_id_ciudad</text><text class="dtype" x="494" y="121">NUMBER (10)</text>
+    <line class="rule" x1="350" y1="124" x2="635" y2="124"/><text class="constraint" x="354" y="139">🔑 UNIVERSIDAD_PK (id_universidad, CIUDAD_id_ciudad)</text><line class="rule" x1="350" y1="143" x2="635" y2="143"/><text class="constraint" x="354" y="158">🔑 UNIVERSIDAD_CIUDAD_FK (CIUDAD_id_ciudad)</text></g>
+  <!-- OFRECER -->
+  <g><rect class="table" x="717" y="12" width="490" height="125"/><text class="head" x="962" y="26">Ofrecer</text><line class="rule" x1="717" y1="31" x2="1207" y2="31"/>
+    <text class="mark" x="720" y="43">PF</text><text class="star" x="737" y="43">*</text><text class="field" x="749" y="43">UNIVERSIDAD_id_universidad</text><text class="dtype" x="917" y="43">NUMBER (10)</text>
+    <text class="mark" x="720" y="59">PF</text><text class="star" x="737" y="59">*</text><text class="field" x="749" y="59">UNIVERSIDAD_CIUDAD_id_ciudad</text><text class="dtype" x="917" y="59">NUMBER (10)</text>
+    <text class="mark" x="720" y="75">PF</text><text class="star" x="737" y="75">*</text><text class="field" x="749" y="75">CARRERA_id_carrera</text><text class="dtype" x="917" y="75">NUMBER (10)</text>
+    <line class="rule" x1="717" y1="78" x2="1207" y2="78"/><text class="constraint" x="721" y="93">🔑 Ofrecer_PK (UNIVERSIDAD_id_universidad, UNIVERSIDAD_CIUDAD_id_ciudad, CARRERA_id_carrera)</text><line class="rule" x1="717" y1="98" x2="1207" y2="98"/><text class="constraint" x="721" y="113">🔑 Ofrecer_UNIVERSIDAD_FK (UNIVERSIDAD_id_universidad, UNIVERSIDAD_CIUDAD_id_ciudad)</text><text class="constraint" x="721" y="129">🔑 Ofrecer_CARRERA_FK (CARRERA_id_carrera)</text></g>
+  <!-- CARRERA -->
+  <g><rect class="table" x="748" y="193" width="202" height="89"/><text class="head" x="849" y="207">CARRERA</text><line class="rule" x1="748" y1="212" x2="950" y2="212"/><text class="mark" x="751" y="225">P</text><text class="star" x="762" y="225">*</text><text class="field" x="774" y="225">id_carrera</text><text class="dtype" x="869" y="225">NUMBER (10)</text><text class="star" x="762" y="241">*</text><text class="field" x="774" y="241">nombre_carrera</text><text class="dtype" x="869" y="241">VARCHAR2 (100)</text><text class="star" x="762" y="257">*</text><text class="field" x="774" y="257">facultad</text><text class="dtype" x="869" y="257">VARCHAR2 (100)</text><line class="rule" x1="748" y1="260" x2="950" y2="260"/><text class="constraint" x="751" y="276">🔑 CARRERA_PK (id_carrera)</text></g>
+  <!-- RED SOCIAL -->
+  <g><rect class="table" x="30" y="254" width="292" height="126"/><text class="head" x="176" y="268">RED_SOCIAL</text><line class="rule" x1="30" y1="273" x2="322" y2="273"/><text class="mark" x="33" y="286">P</text><text class="star" x="44" y="286">*</text><text class="field" x="56" y="286">id_red_social</text><text class="dtype" x="187" y="286">NUMBER (10)</text><text class="star" x="44" y="302">*</text><text class="field" x="56" y="302">nombre_red_social</text><text class="dtype" x="187" y="302">VARCHAR2 (50)</text><text class="star" x="44" y="318">*</text><text class="field" x="56" y="318">nombre_usuario</text><text class="dtype" x="187" y="318">VARCHAR2 (50)</text><text class="mark" x="33" y="334">PF</text><text class="star" x="50" y="334">*</text><text class="field" x="62" y="334">ESTUDIANTE_id_usuario</text><text class="dtype" x="187" y="334">NUMBER (10)</text><line class="rule" x1="30" y1="337" x2="322" y2="337"/><text class="constraint" x="34" y="352">🔑 RED_SOCIAL_PK (id_red_social, ESTUDIANTE_id_usuario)</text><line class="rule" x1="30" y1="356" x2="322" y2="356"/><text class="constraint" x="34" y="372">🔑 RED_SOCIAL_ESTUDIANTE_FK (ESTUDIANTE_id_usuario)</text></g>
+  <!-- ESTUDIANTE -->
+  <g><rect class="table" x="450" y="329" width="484" height="177"/><text class="head" x="692" y="343">ESTUDIANTE</text><line class="rule" x1="450" y1="348" x2="934" y2="348"/><text class="mark" x="453" y="361">PF</text><text class="star" x="470" y="361">*</text><text class="field" x="482" y="361">id_usuario</text><text class="dtype" x="592" y="361">NUMBER (10)</text><text class="mark" x="453" y="377">F</text><text class="star" x="464" y="377">*</text><text class="field" x="476" y="377">CARRERA_id_carrera</text><text class="dtype" x="592" y="377">NUMBER (10)</text><text class="mark" x="453" y="393">F</text><text class="star" x="464" y="393">*</text><text class="field" x="476" y="393">UNIVERSIDAD_id_universidad</text><text class="dtype" x="592" y="393">NUMBER (10)</text><text class="mark" x="453" y="409">F</text><text class="star" x="464" y="409">*</text><text class="field" x="476" y="409">UNIVERSIDAD_CIUDAD_id_ciudad</text><text class="dtype" x="592" y="409">NUMBER (10)</text><text class="mark" x="453" y="425">F</text><text class="star" x="464" y="425">*</text><text class="field" x="476" y="425">semestre</text><text class="dtype" x="592" y="425">NUMBER (2)</text><line class="rule" x1="450" y1="429" x2="934" y2="429"/><text class="constraint" x="454" y="444">🔑 ESTUDIANTE_PK (id_usuario)</text><line class="rule" x1="450" y1="448" x2="934" y2="448"/><text class="constraint" x="454" y="463">🔑 ESTUDIANTE_USUARIO_FK (id_usuario)</text><text class="constraint" x="454" y="478">🔑 ESTUDIANTE_CARRERA_FK (CARRERA_id_carrera)</text><text class="constraint" x="454" y="493">🔑 ESTUDIANTE_UNIVERSIDAD_FK (UNIVERSIDAD_id_universidad, UNIVERSIDAD_CIUDAD_id_ciudad)</text></g>
+  <!-- INTERES -->
+  <g><rect class="table" x="1131" y="263" width="338" height="110"/><text class="head" x="1300" y="277">INTERES_ESTUDIANTE</text><line class="rule" x1="1131" y1="282" x2="1469" y2="282"/><text class="mark" x="1134" y="295">P</text><text class="star" x="1145" y="295">*</text><text class="field" x="1157" y="295">interes</text><text class="dtype" x="1310" y="295">VARCHAR2 (50)</text><text class="mark" x="1134" y="311">F</text><text class="star" x="1145" y="311">*</text><text class="field" x="1157" y="311">ESTUDIANTE_id_usuario</text><text class="dtype" x="1310" y="311">NUMBER (10)</text><line class="rule" x1="1131" y1="314" x2="1469" y2="314"/><text class="constraint" x="1135" y="330">🔑 INTERES_ESTUDIANTE_PK (interes)</text><line class="rule" x1="1131" y1="335" x2="1469" y2="335"/><text class="constraint" x="1135" y="351">🔑 INTERES_ESTUDIANTE_ESTUDIANTE_FK (ESTUDIANTE_id_usuario)</text></g>
+  <!-- USUARIO -->
+  <g><rect class="table" x="54" y="407" width="233" height="153"/><text class="head" x="170.5" y="421">USUARIO</text><line class="rule" x1="54" y1="426" x2="287" y2="426"/><text class="mark" x="57" y="439">P</text><text class="star" x="68" y="439">*</text><text class="field" x="80" y="439">id_usuario</text><text class="dtype" x="174" y="439">NUMBER (10)</text><text class="star" x="68" y="455">*</text><text class="field" x="80" y="455">correo</text><text class="dtype" x="174" y="455">VARCHAR2 (100)</text><text class="star" x="68" y="471">*</text><text class="field" x="80" y="471">fecha_nacimiento</text><text class="dtype" x="174" y="471">DATE</text><text class="star" x="68" y="487">*</text><text class="field" x="80" y="487">nombre</text><text class="dtype" x="174" y="487">VARCHAR2 (50)</text><text class="star" x="68" y="503">*</text><text class="field" x="80" y="503">apellido</text><text class="dtype" x="174" y="503">VARCHAR2 (50)</text><text class="star" x="68" y="519">*</text><text class="field" x="80" y="519">foto_perfil</text><text class="dtype" x="174" y="519">VARCHAR2 (255)</text><text class="star" x="68" y="535">*</text><text class="field" x="80" y="535">genero</text><text class="dtype" x="174" y="535">VARCHAR2 (30)</text><line class="rule" x1="54" y1="538" x2="287" y2="538"/><text class="constraint" x="58" y="553">🔑 USUARIO_PK (id_usuario)</text></g>
+  <!-- ADMINISTRADOR -->
+  <g><rect class="table" x="10" y="641" width="233" height="98"/><text class="head" x="126.5" y="655">ADMINISTRADOR</text><line class="rule" x1="10" y1="660" x2="243" y2="660"/><text class="mark" x="13" y="674">PF</text><text class="star" x="30" y="674">*</text><text class="field" x="42" y="674">id_usuario</text><text class="dtype" x="135" y="674">NUMBER (10)</text><line class="rule" x1="10" y1="678" x2="243" y2="678"/><text class="constraint" x="14" y="694">🔑 ADMINISTRADOR_PK (id_usuario)</text><line class="rule" x1="10" y1="699" x2="243" y2="699"/><text class="constraint" x="14" y="715">🔑 ADMINISTRADOR_USUARIO_FK (id_usuario)</text></g>
+  <!-- REPORTE -->
+  <g><rect class="table" x="1146" y="421" width="287" height="168"/><text class="head" x="1289.5" y="435">REPORTE</text><line class="rule" x1="1146" y1="440" x2="1433" y2="440"/><text class="mark" x="1149" y="453">P</text><text class="star" x="1160" y="453">*</text><text class="field" x="1172" y="453">id_reporte</text><text class="dtype" x="1311" y="453">NUMBER (10)</text><text class="star" x="1160" y="469">*</text><text class="field" x="1172" y="469">tipo_reporte</text><text class="dtype" x="1311" y="469">VARCHAR2 (30)</text><text class="star" x="1160" y="485">*</text><text class="field" x="1172" y="485">descripcion</text><text class="dtype" x="1311" y="485">VARCHAR2 (1000)</text><text class="star" x="1160" y="501">*</text><text class="field" x="1172" y="501">fecha_hora_reporte</text><text class="dtype" x="1311" y="501">TIMESTAMP</text><text class="mark" x="1149" y="517">PF</text><text class="star" x="1166" y="517">*</text><text class="field" x="1178" y="517">ESTUDIANTE_id_usuario</text><text class="dtype" x="1311" y="517">NUMBER (10)</text><text class="mark" x="1149" y="533">F</text><text class="field" x="1166" y="533">ESTUDIANTE_id_usuario1</text><text class="dtype" x="1311" y="533">NUMBER (10)</text><line class="rule" x1="1146" y1="536" x2="1433" y2="536"/><text class="constraint" x="1150" y="552">🔑 REPORTE_PK (id_reporte, ESTUDIANTE_id_usuario)</text><text class="constraint" x="1150" y="568">🔑 REPORTE_ESTUDIANTE_FK (ESTUDIANTE_id_usuario)</text><text class="constraint" x="1150" y="584">🔑 REPORTE_ESTUDIANTE_FK1 (ESTUDIANTE_id_usuario1)</text></g>
+  <!-- REACCION -->
+  <g><rect class="table" x="337" y="657" width="310" height="161"/><text class="head" x="492" y="671">REACCION</text><line class="rule" x1="337" y1="676" x2="647" y2="676"/><text class="mark" x="340" y="689">P</text><text class="star" x="351" y="689">*</text><text class="field" x="363" y="689">numero_reaccion</text><text class="dtype" x="470" y="689">NUMBER (10)</text><text class="star" x="351" y="705">*</text><text class="field" x="363" y="705">tipo_reaccion</text><text class="dtype" x="470" y="705">VARCHAR2 (20)</text><text class="star" x="351" y="721">*</text><text class="field" x="363" y="721">fecha_hora_reaccion</text><text class="dtype" x="470" y="721">TIMESTAMP</text><text class="mark" x="340" y="737">PF</text><text class="star" x="357" y="737">*</text><text class="field" x="369" y="737">ESTUDIANTE_id_usuario</text><text class="dtype" x="470" y="737">NUMBER (10)</text><text class="mark" x="340" y="753">F</text><text class="field" x="357" y="753">ESTUDIANTE_id_usuario1</text><text class="dtype" x="470" y="753">NUMBER (10)</text><line class="rule" x1="337" y1="756" x2="647" y2="756"/><text class="constraint" x="341" y="772">🔑 REACCION_PK (numero_reaccion, ESTUDIANTE_id_usuario)</text><text class="constraint" x="341" y="788">🔑 REACCION_ESTUDIANTE_FK (ESTUDIANTE_id_usuario)</text><text class="constraint" x="341" y="804">🔑 REACCION_ESTUDIANTE_FK1 (ESTUDIANTE_id_usuario1)</text></g>
+  <!-- COMENTARIO -->
+  <g><rect class="table" x="731" y="638" width="342" height="160"/><text class="head" x="902" y="652">COMENTARIO</text><line class="rule" x1="731" y1="657" x2="1073" y2="657"/><text class="mark" x="734" y="670">P</text><text class="star" x="745" y="670">*</text><text class="field" x="757" y="670">numero_comentario</text><text class="dtype" x="873" y="670">NUMBER (10)</text><text class="star" x="745" y="686">*</text><text class="field" x="757" y="686">contenido</text><text class="dtype" x="873" y="686">VARCHAR2 (1000)</text><text class="star" x="745" y="702">*</text><text class="field" x="757" y="702">fecha_hora</text><text class="dtype" x="873" y="702">TIMESTAMP</text><text class="mark" x="734" y="718">PF</text><text class="star" x="751" y="718">*</text><text class="field" x="763" y="718">ESTUDIANTE_id_usuario</text><text class="dtype" x="873" y="718">NUMBER (10)</text><text class="mark" x="734" y="734">F</text><text class="field" x="751" y="734">ESTUDIANTE_id_usuario1</text><text class="dtype" x="873" y="734">NUMBER (10)</text><line class="rule" x1="731" y1="737" x2="1073" y2="737"/><text class="constraint" x="735" y="753">🔑 COMENTARIO_PK (numero_comentario, ESTUDIANTE_id_usuario)</text><text class="constraint" x="735" y="769">🔑 COMENTARIO_ESTUDIANTE_FK (ESTUDIANTE_id_usuario)</text><text class="constraint" x="735" y="785">🔑 COMENTARIO_ESTUDIANTE_FK1 (ESTUDIANTE_id_usuario1)</text></g>
+  <!-- Relaciones -->
+  <g class="rel" marker-end="url(#arrow)">
+    <path d="M350 60H259"/><path d="M635 75H717"/><path d="M849 137V193"/><path d="M841 282V329"/>
+    <path d="M322 354H450"/><path d="M322 477H450"/><path d="M1131 318H934"/><path d="M1146 478H934"/><path d="M934 437H1146"/>
+    <path d="M543 329V174"/><path d="M543 506V329"/><path d="M548 657V506"/><path d="M842 638V506"/>
+    <path d="M170 560V641"/>
   </g>
-  <g>
-    <rect class="box" x="30" y="55" width="300" height="150"/><rect class="head" x="30" y="55" width="300" height="28"/><text class="ht" x="180" y="74">CIUDAD</text>
-    <text class="field" x="42" y="104"><tspan class="key">PK</tspan>  id_ciudad  NUMBER(10)</text><text class="field" x="42" y="126">nombre_ciudad  VARCHAR2(80)</text><text class="field" x="42" y="148">departamento  VARCHAR2(80)</text>
-    <rect class="box" x="420" y="55" width="330" height="185"/><rect class="head" x="420" y="55" width="330" height="28"/><text class="ht" x="585" y="74">UNIVERSIDAD</text>
-    <text class="field" x="432" y="104"><tspan class="key">PK</tspan>  id_universidad  NUMBER(10)</text><text class="field" x="432" y="126">nombre_universidad  VARCHAR2(150)</text><text class="field" x="432" y="148">sigla  VARCHAR2(20)</text><text class="field" x="432" y="170">calle  VARCHAR2(100)</text><text class="field" x="432" y="192">ciudad  VARCHAR2(100)</text><text class="field" x="432" y="214"><tspan class="key">FK</tspan>  CIUDAD_id_ciudad  NUMBER(10)</text>
-  </g>
-  <g>
-    <rect class="box" x="830" y="55" width="540" height="150"/><rect class="head" x="830" y="55" width="540" height="28"/><text class="ht" x="1100" y="74">OFRECER</text>
-    <text class="field" x="842" y="104"><tspan class="key">PK</tspan>  UNIVERSIDAD_id_universidad  NUMBER(10)</text><text class="field" x="842" y="126"><tspan class="key">PK</tspan>  UNIVERSIDAD_CIUDAD_id_ciudad  NUMBER(10)</text><text class="field" x="842" y="148"><tspan class="key">PK</tspan>  CARRERA_id_carrera  NUMBER(10)</text><text class="field" x="842" y="170"><tspan class="key">FK</tspan>  universidad, ciudad y carrera</text>
-  </g>
-  <g>
-    <rect class="box" x="880" y="260" width="280" height="120"/><rect class="head" x="880" y="260" width="280" height="28"/><text class="ht" x="1020" y="279">CARRERA</text>
-    <text class="field" x="892" y="307"><tspan class="key">PK</tspan>  id_carrera  NUMBER(10)</text><text class="field" x="892" y="329">nombre_carrera  VARCHAR2(100)</text><text class="field" x="892" y="351">facultad  VARCHAR2(100)</text>
-  </g>
-  <g>
-    <rect class="box" x="470" y="315" width="480" height="190"/><rect class="head" x="470" y="315" width="480" height="28"/><text class="ht" x="710" y="334">ESTUDIANTE</text>
-    <text class="field" x="482" y="362"><tspan class="key">PK</tspan>  id_usuario  NUMBER(10)</text><text class="field" x="482" y="384"><tspan class="key">FK</tspan>  CARRERA_id_carrera  NUMBER(10)</text><text class="field" x="482" y="406"><tspan class="key">FK</tspan>  UNIVERSIDAD_id_universidad  NUMBER(10)</text><text class="field" x="482" y="428"><tspan class="key">FK</tspan>  UNIVERSIDAD_CIUDAD_id_ciudad  NUMBER(10)</text><text class="field" x="482" y="450">semestre  NUMBER(2)</text><text class="field" x="482" y="472">estado  VARCHAR2(20)</text>
-  </g>
-  <g>
-    <rect class="box" x="30" y="355" width="300" height="130"/><rect class="head" x="30" y="355" width="300" height="28"/><text class="ht" x="180" y="374">RED_SOCIAL</text>
-    <text class="field" x="42" y="402"><tspan class="key">PK</tspan>  id_red_social  NUMBER(10)</text><text class="field" x="42" y="424">nombre_red_social  VARCHAR2(50)</text><text class="field" x="42" y="446"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
-  </g>
-  <g>
-    <rect class="box" x="30" y="555" width="300" height="150"/><rect class="head" x="30" y="555" width="300" height="28"/><text class="ht" x="180" y="574">USUARIO</text>
-    <text class="field" x="42" y="602"><tspan class="key">PK</tspan>  id_usuario  NUMBER(10)</text><text class="field" x="42" y="624">correo  VARCHAR2(100)</text><text class="field" x="42" y="646">nombre  VARCHAR2(50)</text><text class="field" x="42" y="668">apellido  VARCHAR2(50)</text><text class="field" x="42" y="690">genero  VARCHAR2(30)</text>
-  </g>
-  <g>
-    <rect class="box" x="30" y="790" width="300" height="75"/><rect class="head" x="30" y="790" width="300" height="28"/><text class="ht" x="180" y="809">ADMINISTRADOR</text>
-    <text class="field" x="42" y="837"><tspan class="key">PK/FK</tspan>  id_usuario  NUMBER(10)</text>
-  </g>
-  <g>
-    <rect class="box" x="1060" y="355" width="310" height="130"/><rect class="head" x="1060" y="355" width="310" height="28"/><text class="ht" x="1215" y="374">INTERÉS ESTUDIANTE</text>
-    <text class="field" x="1072" y="402"><tspan class="key">PK</tspan>  interes  VARCHAR2(60)</text><text class="field" x="1072" y="424"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
-  </g>
-  <g>
-    <rect class="box" x="1070" y="555" width="300" height="155"/><rect class="head" x="1070" y="555" width="300" height="28"/><text class="ht" x="1220" y="574">REPORTE</text>
-    <text class="field" x="1082" y="602"><tspan class="key">PK</tspan>  id_reporte  NUMBER(10)</text><text class="field" x="1082" y="624">tipo_reporte  VARCHAR2(30)</text><text class="field" x="1082" y="646">descripcion  VARCHAR2(400)</text><text class="field" x="1082" y="668"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
-  </g>
-  <g>
-    <rect class="box" x="470" y="585" width="300" height="150"/><rect class="head" x="470" y="585" width="300" height="28"/><text class="ht" x="620" y="604">REACCION</text>
-    <text class="field" x="482" y="632"><tspan class="key">PK</tspan>  numero_reaccion  NUMBER(10)</text><text class="field" x="482" y="654">tipo_reaccion  VARCHAR2(20)</text><text class="field" x="482" y="676">fecha_hora_reaccion  TIMESTAMP</text><text class="field" x="482" y="698"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
-  </g>
-  <g>
-    <rect class="box" x="790" y="585" width="260" height="150"/><rect class="head" x="790" y="585" width="260" height="28"/><text class="ht" x="920" y="604">COMENTARIO</text>
-    <text class="field" x="802" y="632"><tspan class="key">PK</tspan>  numero_comentario  NUMBER(10)</text><text class="field" x="802" y="654">contenido  VARCHAR2(1000)</text><text class="field" x="802" y="676">fecha_hora  TIMESTAMP</text><text class="field" x="802" y="698"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
-  </g>
-  <g class="line">
-    <line x1="330" y1="130" x2="420" y2="130"/><line x1="750" y1="130" x2="830" y2="130"/><line x1="1020" y1="380" x2="1020" y2="260"/><line x1="950" y1="410" x2="950" y2="315"/><line x1="710" y1="315" x2="710" y2="240"/><line x1="330" y1="420" x2="470" y2="420"/><line x1="330" y1="630" x2="470" y2="630"/><line x1="950" y1="505" x2="950" y2="585"/><line x1="1070" y1="630" x2="950" y2="630"/><line x1="620" y1="585" x2="620" y2="505"/><line x1="1060" y1="420" x2="950" y2="420"/><line x1="180" y1="705" x2="180" y2="790"/>
-  </g>
+  <g class="rel"><path d="M287 438C315 438 309 575 287 575V560"/><path d="M243 687H265V575H287" stroke="#111" fill="none"/></g>
 </svg>
