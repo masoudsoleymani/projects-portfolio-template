@@ -4,6 +4,11 @@ import { site } from '@data/site';
 const section = site.evidences.normalizacion;
 const links = [
   {
+    title: 'Relacional de Empareja2 en 3FN',
+    url: '/RelacionalEmpareja2.svg',
+    description: 'Abre la imagen del relacional de Empareja2 normalizado en tercera forma normal (3FN).',
+  },
+  {
     title: 'Taller de normalización (CSV)',
     url: '/TallerNormalizacion.csv',
     description: 'Descarga el archivo CSV del taller de normalización.',
@@ -30,17 +35,6 @@ const links = [
       ))}
     </div>
 
-    <figure class="normalizacion-diagrama">
-      <img
-        src="/RelacionalEmpareja2.svg"
-        alt="Relacional de Empareja2 normalizado en tercera forma normal (3FN)"
-        loading="lazy"
-      />
-      <figcaption>
-        Relacional de Empareja2 normalizado en tercera forma normal (3FN).
-      </figcaption>
-    </figure>
-
     <div class="link-stack">
       {links.map((link) => (
         <div class="link-item">
@@ -65,30 +59,6 @@ const links = [
     opacity: 0;
     transform: translateY(20px);
     animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  .normalizacion-diagrama {
-    margin: 0;
-    padding: 1rem;
-    overflow-x: auto;
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    background: rgba(15, 23, 42, 0.35);
-    border-radius: 0.75rem;
-  }
-
-  .normalizacion-diagrama img {
-    display: block;
-    width: 100%;
-    min-width: 700px;
-    height: auto;
-    border-radius: 0.5rem;
-    background: #fff;
-  }
-
-  .normalizacion-diagrama figcaption {
-    margin-top: 0.75rem;
-    color: #cbd5e1;
-    font-weight: 700;
   }
 
   .link-stack {
