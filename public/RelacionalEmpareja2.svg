@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <rect width="1400" height="900" fill="#fff"/>
+  <style>
+    .title{font:700 22px Arial;fill:#111827;text-anchor:middle}.box{fill:#fff9c4;stroke:#2563eb;stroke-width:2}.head{fill:#eab308;stroke:#2563eb;stroke-width:1}.ht{font:700 16px Arial;fill:#1e3a8a;text-anchor:middle}.field{font:700 13px Arial;fill:#111827}.key{fill:#059669}.line{stroke:#334155;stroke-width:2}.rel{fill:#2563eb}.badge{fill:#16a34a}.bt{font:700 18px Arial;fill:#fff;text-anchor:middle}
+  </style>
+  <g>
+    <rect class="badge" x="1110" y="20" rx="10" width="270" height="44"/><text class="bt" x="1245" y="49">DIAGRAMA RELACIONAL · 3FN</text>
+  </g>
+  <g>
+    <rect class="box" x="30" y="55" width="300" height="150"/><rect class="head" x="30" y="55" width="300" height="28"/><text class="ht" x="180" y="74">CIUDAD</text>
+    <text class="field" x="42" y="104"><tspan class="key">PK</tspan>  id_ciudad  NUMBER(10)</text><text class="field" x="42" y="126">nombre_ciudad  VARCHAR2(80)</text><text class="field" x="42" y="148">departamento  VARCHAR2(80)</text>
+    <rect class="box" x="420" y="55" width="330" height="185"/><rect class="head" x="420" y="55" width="330" height="28"/><text class="ht" x="585" y="74">UNIVERSIDAD</text>
+    <text class="field" x="432" y="104"><tspan class="key">PK</tspan>  id_universidad  NUMBER(10)</text><text class="field" x="432" y="126">nombre_universidad  VARCHAR2(150)</text><text class="field" x="432" y="148">sigla  VARCHAR2(20)</text><text class="field" x="432" y="170">calle  VARCHAR2(100)</text><text class="field" x="432" y="192">ciudad  VARCHAR2(100)</text><text class="field" x="432" y="214"><tspan class="key">FK</tspan>  CIUDAD_id_ciudad  NUMBER(10)</text>
+  </g>
+  <g>
+    <rect class="box" x="830" y="55" width="540" height="150"/><rect class="head" x="830" y="55" width="540" height="28"/><text class="ht" x="1100" y="74">OFRECER</text>
+    <text class="field" x="842" y="104"><tspan class="key">PK</tspan>  UNIVERSIDAD_id_universidad  NUMBER(10)</text><text class="field" x="842" y="126"><tspan class="key">PK</tspan>  UNIVERSIDAD_CIUDAD_id_ciudad  NUMBER(10)</text><text class="field" x="842" y="148"><tspan class="key">PK</tspan>  CARRERA_id_carrera  NUMBER(10)</text><text class="field" x="842" y="170"><tspan class="key">FK</tspan>  universidad, ciudad y carrera</text>
+  </g>
+  <g>
+    <rect class="box" x="880" y="260" width="280" height="120"/><rect class="head" x="880" y="260" width="280" height="28"/><text class="ht" x="1020" y="279">CARRERA</text>
+    <text class="field" x="892" y="307"><tspan class="key">PK</tspan>  id_carrera  NUMBER(10)</text><text class="field" x="892" y="329">nombre_carrera  VARCHAR2(100)</text><text class="field" x="892" y="351">facultad  VARCHAR2(100)</text>
+  </g>
+  <g>
+    <rect class="box" x="470" y="315" width="480" height="190"/><rect class="head" x="470" y="315" width="480" height="28"/><text class="ht" x="710" y="334">ESTUDIANTE</text>
+    <text class="field" x="482" y="362"><tspan class="key">PK</tspan>  id_usuario  NUMBER(10)</text><text class="field" x="482" y="384"><tspan class="key">FK</tspan>  CARRERA_id_carrera  NUMBER(10)</text><text class="field" x="482" y="406"><tspan class="key">FK</tspan>  UNIVERSIDAD_id_universidad  NUMBER(10)</text><text class="field" x="482" y="428"><tspan class="key">FK</tspan>  UNIVERSIDAD_CIUDAD_id_ciudad  NUMBER(10)</text><text class="field" x="482" y="450">semestre  NUMBER(2)</text><text class="field" x="482" y="472">estado  VARCHAR2(20)</text>
+  </g>
+  <g>
+    <rect class="box" x="30" y="355" width="300" height="130"/><rect class="head" x="30" y="355" width="300" height="28"/><text class="ht" x="180" y="374">RED_SOCIAL</text>
+    <text class="field" x="42" y="402"><tspan class="key">PK</tspan>  id_red_social  NUMBER(10)</text><text class="field" x="42" y="424">nombre_red_social  VARCHAR2(50)</text><text class="field" x="42" y="446"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
+  </g>
+  <g>
+    <rect class="box" x="30" y="555" width="300" height="150"/><rect class="head" x="30" y="555" width="300" height="28"/><text class="ht" x="180" y="574">USUARIO</text>
+    <text class="field" x="42" y="602"><tspan class="key">PK</tspan>  id_usuario  NUMBER(10)</text><text class="field" x="42" y="624">correo  VARCHAR2(100)</text><text class="field" x="42" y="646">nombre  VARCHAR2(50)</text><text class="field" x="42" y="668">apellido  VARCHAR2(50)</text><text class="field" x="42" y="690">genero  VARCHAR2(30)</text>
+  </g>
+  <g>
+    <rect class="box" x="30" y="790" width="300" height="75"/><rect class="head" x="30" y="790" width="300" height="28"/><text class="ht" x="180" y="809">ADMINISTRADOR</text>
+    <text class="field" x="42" y="837"><tspan class="key">PK/FK</tspan>  id_usuario  NUMBER(10)</text>
+  </g>
+  <g>
+    <rect class="box" x="1060" y="355" width="310" height="130"/><rect class="head" x="1060" y="355" width="310" height="28"/><text class="ht" x="1215" y="374">INTERÉS ESTUDIANTE</text>
+    <text class="field" x="1072" y="402"><tspan class="key">PK</tspan>  interes  VARCHAR2(60)</text><text class="field" x="1072" y="424"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
+  </g>
+  <g>
+    <rect class="box" x="1070" y="555" width="300" height="155"/><rect class="head" x="1070" y="555" width="300" height="28"/><text class="ht" x="1220" y="574">REPORTE</text>
+    <text class="field" x="1082" y="602"><tspan class="key">PK</tspan>  id_reporte  NUMBER(10)</text><text class="field" x="1082" y="624">tipo_reporte  VARCHAR2(30)</text><text class="field" x="1082" y="646">descripcion  VARCHAR2(400)</text><text class="field" x="1082" y="668"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
+  </g>
+  <g>
+    <rect class="box" x="470" y="585" width="300" height="150"/><rect class="head" x="470" y="585" width="300" height="28"/><text class="ht" x="620" y="604">REACCION</text>
+    <text class="field" x="482" y="632"><tspan class="key">PK</tspan>  numero_reaccion  NUMBER(10)</text><text class="field" x="482" y="654">tipo_reaccion  VARCHAR2(20)</text><text class="field" x="482" y="676">fecha_hora_reaccion  TIMESTAMP</text><text class="field" x="482" y="698"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
+  </g>
+  <g>
+    <rect class="box" x="790" y="585" width="260" height="150"/><rect class="head" x="790" y="585" width="260" height="28"/><text class="ht" x="920" y="604">COMENTARIO</text>
+    <text class="field" x="802" y="632"><tspan class="key">PK</tspan>  numero_comentario  NUMBER(10)</text><text class="field" x="802" y="654">contenido  VARCHAR2(1000)</text><text class="field" x="802" y="676">fecha_hora  TIMESTAMP</text><text class="field" x="802" y="698"><tspan class="key">FK</tspan>  ESTUDIANTE_id_usuario  NUMBER(10)</text>
+  </g>
+  <g class="line">
+    <line x1="330" y1="130" x2="420" y2="130"/><line x1="750" y1="130" x2="830" y2="130"/><line x1="1020" y1="380" x2="1020" y2="260"/><line x1="950" y1="410" x2="950" y2="315"/><line x1="710" y1="315" x2="710" y2="240"/><line x1="330" y1="420" x2="470" y2="420"/><line x1="330" y1="630" x2="470" y2="630"/><line x1="950" y1="505" x2="950" y2="585"/><line x1="1070" y1="630" x2="950" y2="630"/><line x1="620" y1="585" x2="620" y2="505"/><line x1="1060" y1="420" x2="950" y2="420"/><line x1="180" y1="705" x2="180" y2="790"/>
+  </g>
+</svg>
