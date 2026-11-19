@@ -98,7 +98,23 @@ export const site = {
       paragraphs: [
         'En esta sección, se encuentran las evidencias de los trabajos y talleres sobre SQL.',
       ],
-      links: [],
+      links: [
+        {
+          title: 'Creación de objetos Empareja2',
+          url: 'https://puerto314.github.io/01_creacion_objetos.sql',
+          description: 'Script SQL para crear la base de datos y sus tablas.',
+        },
+        {
+          title: 'Inserción de datos Empareja2',
+          url: 'https://puerto314.github.io/02_insercion_datos.sql',
+          description: 'Script SQL con datos ficticios de prueba para Empareja2.',
+        },
+        {
+          title: 'Consultas varias Empareja2',
+          url: 'https://puerto314.github.io/03_consultas_varias.sql',
+          description: 'Consultas SQL de perfiles, estadísticas, matches y reportes.',
+        },
+      ],
     },
     proyecto: {
       title: 'Proyecto',
