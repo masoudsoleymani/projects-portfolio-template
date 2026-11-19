@@ -60,10 +60,10 @@ export const site = {
             'En este link, se encuentra el modelo de reducción a tablas de un modelo ER diseñado en clase.',
         },
         {
-          title: 'Modelo ER, ER extendido y reducción a tablas',
-          url: 'https://n9.cl/7n082t',
+          title: 'Modelo ER, ER extendido, y reducción de Empareja2',
+          url: 'https://n9.cl/prlfq',
           description:
-            'En este link, se encuentran los 3 modelos que corresponden a un contexto de aerolíneas, vuelos y aviación.',
+            'En este link se encuentran el modelo ER, el modelo ER extendido y la reducción a tablas del proyecto Empareja2.',
         },
         {
           title: 'Reducción a tablas de una biblioteca',
@@ -105,20 +105,7 @@ export const site = {
       paragraphs: [
         'En esta sección, se encuentran las evidencias de los entregables del proyecto final.',
       ],
-      links: [
-        {
-          title: 'Primera versión del proyecto',
-          url: 'https://n9.cl/6um4z',
-          description:
-            'En este link se encuentra el primer draw de los modelos del proyecto (primeras versiones).',
-        },
-        {
-          title: 'Segundo draw proyecto',
-          url: 'https://n9.cl/xmqkc',
-          description:
-            'En este link, se encuentra el segundo draw con el model ER, el extendido, y la reducción a tablas de los modelos del proyecto final.',
-        },
-      ],
+      links: [],
     },
   },
   experiences: [],
