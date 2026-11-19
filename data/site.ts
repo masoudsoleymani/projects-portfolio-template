@@ -114,6 +114,11 @@ export const site = {
           url: 'https://puerto314.github.io/03_consultas_varias.sql',
           description: 'Consultas SQL de perfiles, estadísticas, matches y reportes.',
         },
+        {
+          title: 'Corrección Laboratorio',
+          url: 'https://puerto314.github.io/CorreccionLaboratorio.sql',
+          description: 'Script SQL con tablas, datos y vistas del laboratorio de viajeros y épocas.',
+        },
       ],
     },
     proyecto: {
