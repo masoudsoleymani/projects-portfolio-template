@@ -126,7 +126,73 @@ export const site = {
       paragraphs: [
         'En esta sección, se encuentran las evidencias de los entregables del proyecto final.',
       ],
-      links: [],
+      links: [
+        {
+          title: 'Supuestos Empareja2 (PDF)',
+          url: '/Supuestos_Empareja2.pdf',
+          description: 'Descarga el documento de supuestos del proyecto Empareja2.',
+        },
+        {
+          title: 'Propuesta Empareja2 (PDF)',
+          url: '/Propuesta_Empareja2.pdf',
+          description: 'Descarga la propuesta del proyecto Empareja2.',
+        },
+        {
+          title: 'Presupuesto – Empareja2 (PDF)',
+          url: '/Presupuesto%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga el presupuesto del proyecto Empareja2.',
+        },
+        {
+          title: 'Implementación del RDBMS – Empareja2 (PDF)',
+          url: '/Implementaci%C3%B3n%20del%20RDBMS%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga el documento de implementación del RDBMS de Empareja2.',
+        },
+        {
+          title: 'Implementación de la VM – Empareja2 (PDF)',
+          url: '/Implementaci%C3%B3n%20de%20la%20VM%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga el documento de implementación de la máquina virtual de Empareja2.',
+        },
+        {
+          title: 'Identificación de Stakeholders – Empareja2 (PDF)',
+          url: '/Identificaci%C3%B3n%20de%20Stakeholders%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga la identificación de stakeholders del proyecto Empareja2.',
+        },
+        {
+          title: 'Ejercicios de álgebra relacional (PDF)',
+          url: '/ejercicios_algrelacional.pdf',
+          description: 'Descarga los ejercicios de álgebra relacional.',
+        },
+        {
+          title: 'EDT WBS – Empareja2 (PDF)',
+          url: '/EDT%20WBS%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga la estructura de desglose del trabajo (EDT/WBS) de Empareja2.',
+        },
+        {
+          title: 'Cronograma – Empareja2 (PDF)',
+          url: '/Cronograma%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga el cronograma del proyecto Empareja2.',
+        },
+        {
+          title: 'Análisis de Selección de Sistema Operativo – Empareja2 (PDF)',
+          url: '/An%C3%A1lisis%20de%20Selecci%C3%B3n%20de%20Sistema%20Operativo%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga el análisis de selección del sistema operativo para Empareja2.',
+        },
+        {
+          title: 'Análisis de Selección de RDBMS – Empareja2 (PDF)',
+          url: '/An%C3%A1lisis%20de%20Selecci%C3%B3n%20de%20RDBMS%20%E2%80%93%20Empareja2.pdf',
+          description: 'Descarga el análisis de selección del RDBMS para Empareja2.',
+        },
+        {
+          title: 'Acta de Constitución Empareja2 (PDF)',
+          url: '/Acta_de_Constituci%C3%B3n_Empareja2.pdf',
+          description: 'Descarga el acta de constitución del proyecto Empareja2.',
+        },
+        {
+          title: 'Acta de Cierre Empareja2 (PDF)',
+          url: '/Acta_de_Cierre_Empareja2.pdf',
+          description: 'Descarga el acta de cierre del proyecto Empareja2.',
+        },
+      ],
     },
   },
   experiences: [],
