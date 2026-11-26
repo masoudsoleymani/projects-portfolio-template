@@ -47,6 +47,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 </section>
 
 <style is:global>
+  .sql-grid { grid-template-columns: minmax(0, 1fr); }
   .sql-card { animation: evidence-rise 550ms both; animation-delay: calc(var(--item-index, 0) * 70ms); }
   .code-window { overflow:hidden; margin:-.2rem -.2rem .25rem; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 86%); border-radius:.72rem; background:color-mix(in srgb,var(--color-background),black 25%); }
   .code-window-bar { display:flex; align-items:center; gap:.3rem; padding:.55rem .65rem; border-bottom:1px solid color-mix(in srgb,var(--color-subtext),transparent 90%); }
