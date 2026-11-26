@@ -1,85 +1,54 @@
 ---
 import { site } from '@data/site';
 
-type AboutParagraph =
-  | string
-  | {
-      text?: string;
-      link?: { text: string; href: string };
-      textAfter?: string;
-      heading?: string;
-      bullets?: string[];
-      techItems?: string[];
-    };
+interface AboutParagraph {
+  text?: string;
+  link?: { text: string; href: string };
+  textAfter?: string;
+  heading?: string;
+  bullets?: string[];
+  techItems?: string[];
+}
 
-const paragraphs = site.about.paragraphs as readonly AboutParagraph[];
+const paragraphs = site.about.paragraphs as readonly (string | AboutParagraph)[];
 ---
 
-<section
-  id="about"
-  class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8"
-  aria-labelledby="about-heading"
->
-  <h2 id="about-heading" class="section-heading">Sobre mí</h2>
+<section id="about" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="about-heading">
+  <div class="section-intro about-intro">
+    <div>
+      <span class="section-eyebrow"><span class="eyebrow-dot"></span> Perfil · Bogotá, Colombia</span>
+      <h2 id="about-heading" class="section-heading">Sobre mí</h2>
+    </div>
+    <span class="profile-stamp" aria-label="Estudiante de Ingeniería de Sistemas">SISTEMAS <b>✳</b></span>
+  </div>
   <div class="reveal-content mt-8 grid items-start gap-10">
-    <div class="space-y-8 body-copy">
-      {paragraphs.map((p) =>
-        typeof p === 'string' ? (
-          <p>{p}</p>
-        ) : (
-          <>
-            {'text' in p && p.text !== undefined && (
-              <p>
-                {p.text}
-                {p.link && (
-                  <a href={p.link.href} class="subtle-link text-accent" target="_blank" rel="noreferrer">
-                    {p.link.text}
-                  </a>
-                )}
-                {'textAfter' in p && p.textAfter}
-              </p>
-            )}
-            {p.heading && (
-              <div class="space-y-2">
-                <p class="font-semibold text-white-soft">{p.heading}</p>
-
-                {p.bullets && (
-                  <ul class="list-disc space-y-1 pl-5">
-                    {p.bullets.map((bullet) => (
-                      <li>{bullet}</li>
-                    ))}
-                  </ul>
-                )}
-
-                {p.techItems && (
-                  <div class="mt-3 flex flex-wrap gap-2">
-                    {p.techItems.map((tech) => (
-                      <span class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        )
-      )}
+    <div class="space-y-8 body-copy about-copy">
+      {paragraphs.map((p) => typeof p === 'string' ? (
+        <p>{p}</p>
+      ) : (
+        <>
+          {'text' in p && p.text !== undefined && <p>{p.text}{p.link && <a href={p.link.href} class="subtle-link text-accent" target="_blank" rel="noreferrer">{p.link.text}</a>}{'textAfter' in p && p.textAfter}</p>}
+          {p.heading && (
+            <div class="interest-panel">
+              <div class="interest-heading"><span class="eyebrow-dot"></span><p>{p.heading}</p></div>
+              {p.bullets && <ul class="interest-list">{p.bullets.map((bullet) => <li><span aria-hidden="true">✳</span>{bullet}</li>)}</ul>}
+              {p.techItems && <div class="mt-3 flex flex-wrap gap-2">{p.techItems.map((tech) => <span class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">{tech}</span>)}</div>}
+            </div>
+          )}
+        </>
+      ))}
     </div>
   </div>
 </section>
 
 <style is:global>
-  .reveal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  .profile-stamp { display:inline-flex; align-items:center; gap:.5rem; padding:.45rem .7rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 68%); border-radius:999px; color:var(--color-subtext); font: .58rem var(--font-mono); letter-spacing:.1em; white-space:nowrap; }
+  .profile-stamp b { color:var(--color-accent); font-size:.8rem; }
+  .about-copy > p { padding-left:1rem; border-left:2px solid color-mix(in srgb,var(--color-accent),transparent 45%); }
+  .interest-panel { padding:1.2rem; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 84%); border-radius:1rem; background:linear-gradient(145deg,color-mix(in srgb,var(--color-maintext),transparent 96%),color-mix(in srgb,var(--color-background),transparent 4%)); }
+  .interest-heading { display:flex; align-items:center; gap:.6rem; }
+  .interest-heading p { margin:0; color:var(--color-maintext); font-family:var(--font-heading); font-weight:650; }
+  .interest-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); gap:.65rem; margin:1rem 0 0; padding:0; list-style:none; }
+  .interest-list li { display:flex; align-items:center; gap:.55rem; padding:.6rem .7rem; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 91%); border-radius:.65rem; color:var(--color-subtext); font-size:.82rem; }
+  .interest-list li span { color:var(--color-accent); font-size:.7rem; }
 </style>

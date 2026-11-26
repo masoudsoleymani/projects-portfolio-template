@@ -9,82 +9,45 @@ const links = section.links ?? [
     description: section.linkDescription ?? 'Este link lleva a ver el diagrama.',
   },
 ];
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
-<section
-  id="modelado-content"
-  class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8"
-  aria-labelledby="modelado-heading"
->
-  <h2 id="modelado-heading" class="section-heading">{section.title}</h2>
+<section id="modelado-content" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="modelado-heading">
+  <div class="section-intro">
+    <div>
+      <span class="section-eyebrow"><span class="eyebrow-dot"></span> Evidencias · diagramas</span>
+      <h2 id="modelado-heading" class="section-heading">{section.title}</h2>
+    </div>
+    <span class="document-count">{String(links.length).padStart(2, '0')} <span>RECURSOS</span></span>
+  </div>
 
   <div class="reveal-content mt-8 space-y-6">
-    <div class="body-copy">
-      {section.paragraphs.map((p) => (
-        <p>{p}</p>
-      ))}
-    </div>
-
+    <div class="body-copy">{section.paragraphs.map((p) => <p>{p}</p>)}</div>
     <div class="link-stack">
-      {links.map((link) => (
-        <div class="link-item">
-          <h3 class="link-title">{link.title}</h3>
-          <p class="link-description">{link.description}</p>
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-block text-blue-600 underline hover:text-blue-800"
-          >
-            {link.title}
-          </a>
-        </div>
-      ))}
+      {links.map((link, index) => {
+        const localPath = link.url.startsWith('/') ? `${base}${link.url.replace(/^\/+/, '')}` : null;
+        const imagePath = localPath && /\.(png|jpe?g|svg|webp)$/i.test(link.url);
+        return (
+          <article class="link-item evidence-item" style={`--item-index:${index}`}>
+            {imagePath && <a class="evidence-image" href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${link.title}`}><img src={localPath!} alt={link.title} loading="lazy" /></a>}
+            <span class="evidence-label">DIAGRAMA <span>/{String(index + 1).padStart(2, '0')}</span></span>
+            <h3 class="link-title">{link.title}</h3>
+            <p class="link-description">{link.description}</p>
+            <a href={link.url} target="_blank" rel="noopener noreferrer">Abrir evidencia <span aria-hidden="true">↗</span></a>
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>
 
 <style is:global>
-  .reveal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  .link-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 1.5rem;
-  }
-
-  .link-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    background: rgba(15, 23, 42, 0.35);
-    border-radius: 0.75rem;
-    padding: 1rem 1.1rem;
-  }
-
-  .link-title {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #f8fafc;
-  }
-
-  .link-description {
-    margin: 0;
-    color: #cbd5e1;
-    line-height: 1.6;
-  }
-
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  .evidence-item { animation: evidence-rise 550ms both; animation-delay: calc(var(--item-index, 0) * 70ms); }
+  .evidence-label { color: var(--color-accent); font: 0.62rem var(--font-mono); letter-spacing: .14em; }
+  .evidence-label span { color: var(--color-subtext); }
+  .evidence-image { display:block; width:100%; overflow:hidden; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 82%); border-radius:.75rem; background:var(--color-background); }
+  .evidence-image img { display:block; width:100%; max-height:15rem; object-fit:cover; transition:transform 450ms ease; }
+  .evidence-image:hover img { transform:scale(1.035); }
+  @keyframes evidence-rise { from {opacity:0; transform:translateY(12px)} to {opacity:1; transform:translateY(0)} }
+  @media (prefers-reduced-motion: reduce) { .evidence-item { animation:none; } .evidence-image img { transition:none; } }
 </style>

@@ -3,87 +3,52 @@ import { site } from '@data/site';
 
 const section = site.evidences.sql;
 const links = section.links ?? [
-  {
-    title: 'Ver explicación',
-    url: '#',
-    description: 'Este link lleva a ver la explicación.',
-  },
+  { title: 'Ver explicación', url: '#', description: 'Este link lleva a ver la explicación.' },
 ];
 ---
 
-<section
-  id="sql-content"
-  class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8"
-  aria-labelledby="sql-heading"
->
-  <h2 id="sql-heading" class="section-heading">{section.title}</h2>
-  <div class="reveal-content mt-8 grid items-start gap-10">
-    <div class="space-y-8 body-copy">
-      {section.paragraphs.map((p) => (
-        <p>{p}</p>
-      ))}
+<section id="sql-content" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="sql-heading">
+  <div class="section-intro">
+    <div>
+      <span class="section-eyebrow"><span class="eyebrow-dot"></span> Evidencias · bases de datos</span>
+      <h2 id="sql-heading" class="section-heading">{section.title}</h2>
     </div>
-
-    <div class="link-stack">
-      {links.map((link) => (
-        <div class="link-item">
+    <span class="document-count">{String(links.length).padStart(2, '0')} <span>SCRIPTS</span></span>
+  </div>
+  <div class="reveal-content mt-8 space-y-6">
+    <div class="body-copy">{section.paragraphs.map((p) => <p>{p}</p>)}</div>
+    <div class="link-stack sql-grid">
+      {links.map((link, index) => (
+        <article class="link-item sql-card" style={`--item-index:${index}`}>
+          <div class="code-window" aria-hidden="true">
+            <div class="code-window-bar"><span></span><span></span><span></span><small>SQL / SCRIPT</small></div>
+            <div class="code-lines"><i>01</i><b>SELECT</b> <em>*</em><br /><i>02</i><b>FROM</b> <em>evidencias</em><br /><i>03</i><b>WHERE</b> <em>proyecto</em> = <strong>'Empareja2'</strong><span class="code-cursor">_</span></div>
+          </div>
+          <span class="evidence-label">SCRIPT SQL <span>/{String(index + 1).padStart(2, '0')}</span></span>
           <h3 class="link-title">{link.title}</h3>
           <p class="link-description">{link.description}</p>
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-block text-blue-600 underline hover:text-blue-800"
-          >
-            {link.title}
-          </a>
-        </div>
+          <a href={link.url} target="_blank" rel="noopener noreferrer">Abrir script <span aria-hidden="true">↗</span></a>
+        </article>
       ))}
     </div>
   </div>
 </section>
 
 <style is:global>
-  .reveal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  .link-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 0.5rem;
-  }
-
-  .link-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    background: rgba(15, 23, 42, 0.35);
-    border-radius: 0.75rem;
-    padding: 1rem 1.1rem;
-  }
-
-  .link-title {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #f8fafc;
-  }
-
-  .link-description {
-    margin: 0;
-    color: #cbd5e1;
-    line-height: 1.6;
-  }
-
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  .sql-card { animation: evidence-rise 550ms both; animation-delay: calc(var(--item-index, 0) * 70ms); }
+  .code-window { overflow:hidden; margin:-.2rem -.2rem .25rem; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 86%); border-radius:.72rem; background:color-mix(in srgb,var(--color-background),black 25%); }
+  .code-window-bar { display:flex; align-items:center; gap:.3rem; padding:.55rem .65rem; border-bottom:1px solid color-mix(in srgb,var(--color-subtext),transparent 90%); }
+  .code-window-bar > span { width:.38rem; height:.38rem; border-radius:50%; background:color-mix(in srgb,var(--color-accent),transparent 18%); opacity:.75; }
+  .code-window-bar > span:nth-child(2) { opacity:.48; }
+  .code-window-bar > span:nth-child(3) { opacity:.27; }
+  .code-window-bar small { margin-left:auto; color:var(--color-textrain); font: .52rem var(--font-mono); letter-spacing:.12em; }
+  .code-lines { padding:.85rem .75rem; color:var(--color-subtext); font: .62rem/1.85 var(--font-mono); white-space:nowrap; }
+  .code-lines i { display:inline-block; width:1.55rem; color:var(--color-textrain); font-style:normal; }
+  .code-lines b { color:var(--color-accent); font-weight:500; }
+  .code-lines em { color:var(--color-maintext); font-style:normal; }
+  .code-lines strong { color:color-mix(in srgb,var(--color-accent),white 18%); font-weight:400; }
+  .code-cursor { color:var(--color-accent); animation: cursor-blink 1.1s steps(2) infinite; }
+  @keyframes cursor-blink { 50% {opacity:0} }
+  @keyframes evidence-rise { from {opacity:0; transform:translateY(12px)} to {opacity:1; transform:translateY(0)} }
+  @media (prefers-reduced-motion: reduce) { .sql-card { animation:none; } .code-cursor { animation:none; } }
 </style>

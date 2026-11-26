@@ -3,70 +3,55 @@ import { navLinks, presentationVideo } from '@data/nav';
 import SiteIntro from './SiteIntro.astro';
 ---
 
-
 <aside class="relative hidden shrink-0 lg:block lg:w-[42%]">
-  <div class="reveal-content sticky top-0 flex h-screen max-h-screen flex-col justify-between items-center overflow-y-auto pt-22 px-12 text-center">
-    <div class="space-y-12">
+  <div class="sidebar-shell reveal-content sticky top-0 flex h-screen max-h-screen flex-col items-center justify-between overflow-y-auto pt-22 px-12 text-center">
+    <div class="sidebar-content space-y-10">
       <SiteIntro variant="sidebar" />
-
-      <a
-        href={`${import.meta.env.BASE_URL}${presentationVideo.href.replace(/^\//, '')}`}
-        target="_blank"
-        rel="noreferrer"
-        class="inline-flex items-center justify-center rounded-full border border-accent/60 px-5 py-2 text-sm font-semibold text-accent transition hover:bg-accent/10"
-      >
-        {presentationVideo.label}
+      <a href={`${import.meta.env.BASE_URL}${presentationVideo.href.replace(/^\//, '')}`} target="_blank" rel="noreferrer" class="presentation-link">
+        <span class="play-icon" aria-hidden="true">▶</span>{presentationVideo.label}<span class="presentation-arrow" aria-hidden="true">↗</span>
       </a>
-
-      <nav aria-label="Principal">
+      <nav aria-label="Principal" class="sidebar-nav">
+        <span class="nav-caption"><i></i> EXPLORA EL PORTAFOLIO</span>
         <ul class="flex flex-col items-center gap-4">
-          {
-            navLinks.map((link, index) => (
-              <li>
-                <a
-                  href={`${import.meta.env.BASE_URL}${link.href}`}
-                  class="nav-link"
-                  data-section-link
-                  aria-current={index === 0 ? 'true' : undefined}
-                >
-                  <span>{link.label}</span>
-                </a>
-              </li>
-            ))
-          }
+          {navLinks.map((link, index) => (
+            <li><a href={`${import.meta.env.BASE_URL}${link.href}`} class="nav-link" data-section-link aria-current={index === 0 ? 'true' : undefined}><span class="nav-index">0{index + 1}</span><span>{link.label}</span><span class="nav-arrow" aria-hidden="true">↗</span></a></li>
+          ))}
         </ul>
       </nav>
     </div>
+    <span class="sidebar-footer"><span>ESTEBAN PUERTO</span><i></i> HECHO CON CURIOSIDAD</span>
   </div>
 </aside>
 
 <style is:global>
-  .reveal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  .sidebar-shell { position:relative; }
+  .sidebar-shell::before { position:absolute; top:4rem; left:50%; width:22rem; height:22rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 96%); border-radius:50%; content:''; transform:translateX(-50%); pointer-events:none; }
+  .sidebar-content { position:relative; z-index:1; width:100%; }
+  .presentation-link { display:inline-flex; align-items:center; gap:.65rem; padding:.7rem .95rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 58%); border-radius:999px; background:color-mix(in srgb,var(--color-accent),transparent 94%); color:var(--color-accent); font-size:.78rem; font-weight:650; text-decoration:none; transition:transform 180ms ease,background 180ms ease; }
+  .presentation-link:hover { transform:translateY(-2px); background:color-mix(in srgb,var(--color-accent),transparent 88%); }
+  .play-icon { display:grid; width:1.35rem; height:1.35rem; place-items:center; border-radius:50%; background:var(--color-accent); color:var(--color-background); font-size:.53rem; }
+  .presentation-arrow { margin-left:.15rem; font-size:.85rem; }
+  .sidebar-nav { padding-top:1.25rem; border-top:1px solid color-mix(in srgb,var(--color-subtext),transparent 88%); }
+  .nav-caption { display:flex; align-items:center; justify-content:center; gap:.45rem; margin-bottom:1rem; color:var(--color-textrain); font: .55rem var(--font-mono); letter-spacing:.16em; }
+  .nav-caption i { width:.35rem; height:.35rem; border-radius:50%; background:var(--color-accent); }
+  .sidebar-nav .nav-link { gap:.7rem; padding:.55rem .7rem; border-radius:.6rem; text-decoration:none; }
+  .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link-active { background:color-mix(in srgb,var(--color-accent),transparent 94%); }
+  .nav-index { color:var(--color-textrain); font: .58rem var(--font-mono); }
+  .nav-arrow { color:var(--color-accent); opacity:0; transition:opacity 180ms ease,transform 180ms ease; }
+  .sidebar-nav .nav-link:hover .nav-arrow, .sidebar-nav .nav-link-active .nav-arrow { opacity:1; transform:translate(2px,-2px); }
+  .sidebar-footer { position:relative; display:flex; align-items:center; gap:.45rem; padding:1rem 0; color:var(--color-textrain); font: .5rem var(--font-mono); letter-spacing:.1em; }
+  .sidebar-footer i { width:.25rem; height:.25rem; border-radius:50%; background:var(--color-accent); }
+  @media(prefers-reduced-motion:reduce) { .presentation-link,.nav-arrow { transition:none; } }
 </style>
 
 <script>
   function initTabs() {
     const links = Array.from(document.querySelectorAll('[data-section-link]'));
     const panels = Array.from(document.querySelectorAll('[data-tab-panel]'));
-
     if (!links.length || !panels.length) return;
 
-    const activate = (id) => {
-      panels.forEach((panel) => {
-        panel.hidden = panel.id !== id;
-      });
-
+    const activate = (id: string) => {
+      panels.forEach((panel) => { panel.hidden = panel.id !== id; });
       links.forEach((link) => {
         const targetId = (link.getAttribute('href') || '').split('#')[1] || '';
         const isActive = targetId === id;
@@ -86,12 +71,9 @@ import SiteIntro from './SiteIntro.astro';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
-
     const hash = window.location.hash.replace('#', '');
-    const initialId = panels.some((panel) => panel.id === hash) ? hash : panels[0].id;
-    activate(initialId);
+    activate(panels.some((panel) => panel.id === hash) ? hash : panels[0].id);
   }
-
   initTabs();
   document.addEventListener('astro:page-load', initTabs);
 </script>
