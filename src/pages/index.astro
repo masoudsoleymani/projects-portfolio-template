@@ -39,7 +39,37 @@ import { site } from '../../data/site';
 <style is:global>
   @media (min-width: 1024px) {
     .sidebar-shell {
-      transform: translateX(-1rem);
+      transform: translateX(-1.5rem);
+      align-items: flex-start;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      text-align: left;
+    }
+
+    .sidebar-content,
+    .sidebar-nav {
+      width: 100%;
+    }
+
+    .sidebar-nav .nav-caption {
+      justify-content: flex-start;
+    }
+
+    .sidebar-nav ul {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      gap: 0.35rem;
+    }
+
+    .sidebar-nav li {
+      flex: 0 1 auto;
+    }
+
+    .sidebar-nav .nav-link {
+      gap: 0.35rem;
+      padding: 0.5rem 0.45rem;
+      white-space: nowrap;
     }
   }
 </style>
