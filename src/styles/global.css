@@ -19,7 +19,7 @@
   --font-sans: InterVariable, Inter, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --font-heading: 'Space Grotesk Variable', sans-serif;
-  --font-body: 'Inter Variable', sans-serif;
+  --font-body: 'Inter Variable', Inter, system-ui, sans-serif;
   --max-width-prose: 68ch;
 }
 
@@ -106,6 +106,8 @@
     min-height: 100vh;
     overflow-x: hidden;
     font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
     color: var(--color-maintext);
     @apply antialiased;
     opacity: 0;
@@ -118,6 +120,11 @@
     background-attachment: fixed;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.025em;
+  }
+  p, li { text-wrap: pretty; }
   body::before {
     position: fixed;
     z-index: -1;
@@ -148,7 +155,7 @@
   margin-bottom: 0.65rem;
   color: var(--color-accent);
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -167,10 +174,10 @@
   border: 1px solid color-mix(in srgb, var(--color-accent), transparent 72%);
   border-radius: 999px;
   color: var(--color-accent);
-  font: 0.8rem var(--font-mono);
+  font: 0.88rem var(--font-mono);
   white-space: nowrap;
 }
-.document-count span { color: var(--color-subtext); font-size: 0.52rem; letter-spacing: 0.1em; }
+.document-count span { color: var(--color-subtext); font-size: 0.6rem; letter-spacing: 0.1em; }
 
 .link-stack {
   display: grid;
@@ -222,30 +229,29 @@
   content: '↗';
   font-size: 1rem;
 }
-.link-title { margin: 0; color: var(--color-maintext); font: 650 1rem/1.45 var(--font-heading); }
-.link-description { margin: 0; color: var(--color-subtext); font-size: 0.84rem; line-height: 1.65; }
+.link-title { margin: 0; color: var(--color-maintext); font: 650 1.08rem/1.45 var(--font-heading); }
+.link-description { margin: 0; color: var(--color-subtext); font-size: 0.94rem; line-height: 1.7; }
 .link-item a {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   margin-top: auto;
   color: var(--color-accent);
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 650;
   text-decoration: none;
 }
 .link-item a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-/* About and profile accents */
 #about .body-copy > p, #about .body-copy > :is(ul, div) { position: relative; }
 #about .body-copy > p { padding-left: 1rem; border-left: 2px solid color-mix(in srgb, var(--color-accent), transparent 45%); }
 #about .body-copy [class*="rounded-full"] { box-shadow: 0 4px 16px color-mix(in srgb, var(--color-accent), transparent 94%); }
 
-/* Keep interactive cards accessible and responsive. */
 @media (max-width: 520px) {
+  body { font-size: 16px; }
   .section-intro { align-items: center; }
-  .document-count { font-size: 0.72rem; }
-  .document-count span { font-size: 0.45rem; }
+  .document-count { font-size: 0.78rem; }
+  .document-count span { font-size: 0.52rem; }
   .link-item { padding: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
