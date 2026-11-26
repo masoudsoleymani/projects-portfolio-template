@@ -4,54 +4,55 @@ import type { FeaturedProject } from '../../data/site';
 interface Props {
   project: FeaturedProject;
   imageSrc?: string;
+  compact?: boolean;
 }
 
-const { project, imageSrc: imageOverride } = Astro.props;
+const { project, imageSrc: imageOverride, compact = false } = Astro.props;
 
 const techCategories = project.techCategories;
 const imageSrc = imageOverride ?? (project.image ? (project.image.startsWith('/') ? project.image : `/${project.image}`) : undefined);
 ---
 
-<article class="scroll-stat panel-card group space-y-6">
+<article class:list={['scroll-stat panel-card group', compact ? 'space-y-4 p-4' : 'space-y-6']}>
   <header>
-    <h3 class="text-2xl font-semibold text-slate">
+    <h3 class:list={[compact ? 'text-lg' : 'text-2xl', 'font-semibold text-slate']}>
       {project.title}
     </h3>
     {project.period && <p class="mt-1 font-mono text-sm text-accent">{project.period}</p>}
   </header>
 
   {imageSrc && (
-    <div class="w-full max-w-3xl overflow-hidden rounded-xl">
+    <div class:list={['w-full overflow-hidden rounded-xl', compact ? 'max-w-xl' : 'max-w-3xl']}>
       <img
         src={imageSrc}
         alt={project.imageAlt ?? ''}
-        class="w-full h-56 object-cover"
+        class:list={['w-full object-cover', compact ? 'h-32' : 'h-56']}
         loading="lazy"
         decoding="async"
       />
     </div>
   )}
 
-  <div class="space-y-4">
-    <p class="body-copy">{project.summary}</p>
+  <div class:list={[compact ? 'space-y-2' : 'space-y-4']}>
+    <p class:list={['body-copy', compact && 'text-sm']}>{project.summary}</p>
 
     {project.solution && (
       <div>
-        <dt class="text-xs uppercase tracking-wider text-accent">Solution</dt>
-        <dd class="mt-1.5 text-slate">{project.solution}</dd>
+        <dt class="text-xs uppercase tracking-wider text-accent">Solución</dt>
+        <dd class:list={['mt-1.5 text-slate', compact && 'text-sm']}>{project.solution}</dd>
       </div>
     )}
     {project.impact && (
       <div>
-        <dt class="text-xs uppercase tracking-wider text-accent">Impact</dt>
-        <dd class="mt-1.5 text-slate">{project.impact}</dd>
+        <dt class="text-xs uppercase tracking-wider text-accent">Impacto</dt>
+        <dd class:list={['mt-1.5 text-slate', compact && 'text-sm']}>{project.impact}</dd>
       </div>
     )}
   </div>
 
   <div>
-    <dt class="mb-3 text-xs uppercase tracking-wider text-accent">Technologies / Tools</dt>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <dt class="mb-3 text-xs uppercase tracking-wider text-accent">Tecnologías / Herramientas</dt>
+    <div class:list={['grid grid-cols-1 gap-4', !compact && 'sm:grid-cols-2']}>
       {techCategories.map((techCat) => (
         <div>
           <h4 class="mb-2 text-xs uppercase tracking-wider text-slate-lightest">
@@ -105,6 +106,7 @@ const imageSrc = imageOverride ?? (project.image ? (project.image.startsWith('/'
   }
 
   revealCards();
+  
   
   document.addEventListener('astro:after-swap', revealCards);
 </script>

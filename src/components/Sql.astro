@@ -1,0 +1,98 @@
+---
+import { site } from '@data/site';
+
+const section = site.evidences.sql;
+const links = section.links ?? [
+  { title: 'Ver explicación', url: '#', description: 'Este link lleva a ver la explicación.' },
+];
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<section id="sql-content" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="sql-heading">
+  <div class="section-intro">
+    <div>
+      <span class="section-eyebrow"><span class="eyebrow-dot"></span> Evidencias · bases de datos</span>
+      <h2 id="sql-heading" class="section-heading">{section.title}</h2>
+    </div>
+    <span class="document-count">{String(links.length).padStart(2, '0')} <span>SCRIPTS</span></span>
+  </div>
+  <div class="reveal-content mt-8 space-y-6">
+    <div class="body-copy">{section.paragraphs.map((p) => <p>{p}</p>)}</div>
+    <div class="link-stack sql-grid">
+      {links.map((link, index) => {
+        const filename = link.url.split('/').pop()?.split('?')[0] ?? '';
+        const previewUrl = `${base}${filename}`;
+
+        return (
+          <article class="link-item sql-card" style={`--item-index:${index}`}>
+            <div class="code-window" aria-hidden="true">
+              <div class="code-window-bar"><span></span><span></span><span></span><small>SQL / SCRIPT</small></div>
+              <div class="code-lines"><i>01</i><b>SELECT</b> <em>*</em><br /><i>02</i><b>FROM</b> <em>evidencias</em><br /><i>03</i><b>WHERE</b> <em>proyecto</em> = <strong>'Empareja2'</strong><span class="code-cursor">_</span></div>
+            </div>
+            <span class="evidence-label">SCRIPT SQL <span>/{String(index + 1).padStart(2, '0')}</span></span>
+            <h3 class="link-title">{link.title}</h3>
+            <p class="link-description">{link.description}</p>
+            <a href={link.url} target="_blank" rel="noopener noreferrer">Abrir archivo original <span aria-hidden="true">↗</span></a>
+            <details class="sql-viewer">
+              <summary>Ver código aquí</summary>
+              <pre><code data-sql-src={previewUrl}>El código aparecerá aquí al abrir esta sección.</code></pre>
+            </details>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .sql-grid { grid-template-columns: minmax(0, 1fr); }
+  .sql-card { animation: evidence-rise 550ms both; animation-delay: calc(var(--item-index, 0) * 70ms); }
+  .code-window { overflow:hidden; margin:-.2rem -.2rem .25rem; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 86%); border-radius:.72rem; background:color-mix(in srgb,var(--color-background),black 25%); }
+  .code-window-bar { display:flex; align-items:center; gap:.3rem; padding:.55rem .65rem; border-bottom:1px solid color-mix(in srgb,var(--color-subtext),transparent 90%); }
+  .code-window-bar > span { width:.38rem; height:.38rem; border-radius:50%; background:color-mix(in srgb,var(--color-accent),transparent 18%); opacity:.75; }
+  .code-window-bar > span:nth-child(2) { opacity:.48; }
+  .code-window-bar > span:nth-child(3) { opacity:.27; }
+  .code-window-bar small { margin-left:auto; color:var(--color-textrain); font: .52rem var(--font-mono); letter-spacing:.12em; }
+  .code-lines { padding:.85rem .75rem; color:var(--color-subtext); font: .62rem/1.85 var(--font-mono); white-space:nowrap; }
+  .code-lines i { display:inline-block; width:1.55rem; color:var(--color-textrain); font-style:normal; }
+  .code-lines b { color:var(--color-accent); font-weight:500; }
+  .code-lines em { color:var(--color-maintext); font-style:normal; }
+  .code-lines strong { color:color-mix(in srgb,var(--color-accent),white 18%); font-weight:400; }
+  .code-cursor { color:var(--color-accent); animation: cursor-blink 1.1s steps(2) infinite; }
+  .sql-viewer { margin-top:.85rem; border-top:1px solid color-mix(in srgb,var(--color-subtext),transparent 86%); padding-top:.7rem; }
+  .sql-viewer summary { color:var(--color-accent); cursor:pointer; font-size:.82rem; font-weight:600; }
+  .sql-viewer pre { max-height:28rem; overflow:auto; margin-top:.7rem; padding:1rem; border:1px solid color-mix(in srgb,var(--color-subtext),transparent 86%); border-radius:.6rem; background:color-mix(in srgb,var(--color-background),black 25%); color:var(--color-maintext); font: .72rem/1.65 var(--font-mono); tab-size:2; }
+  .sql-viewer code { white-space:pre; }
+  @keyframes cursor-blink { 50% {opacity:0} }
+  @keyframes evidence-rise { from {opacity:0; transform:translateY(12px)} to {opacity:1; transform:translateY(0)} }
+  @media (prefers-reduced-motion: reduce) { .sql-card { animation:none; } .code-cursor { animation:none; } }
+</style>
+
+<script>
+  function initSqlViewers() {
+    document.querySelectorAll<HTMLDetailsElement>('.sql-viewer').forEach((viewer) => {
+      if (viewer.dataset.viewerReady) return;
+      viewer.dataset.viewerReady = 'true';
+      viewer.addEventListener('toggle', async () => {
+        if (!viewer.open) return;
+        const code = viewer.querySelector<HTMLElement>('[data-sql-src]');
+        if (!code || code.dataset.loaded) return;
+
+        code.textContent = 'Cargando script...';
+        try {
+          const response = await fetch(code.dataset.sqlSrc ?? '');
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          code.textContent = await response.text();
+          code.dataset.loaded = 'true';
+        } catch {
+          code.textContent = 'No se pudo cargar el script. Puedes abrir el archivo original desde el enlace.';
+        }
+      });
+    });
+  }
+
+  initSqlViewers();
+  document.addEventListener('astro:page-load', initSqlViewers);
+</script>

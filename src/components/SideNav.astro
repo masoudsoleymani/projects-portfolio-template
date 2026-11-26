@@ -1,24 +1,21 @@
 ---
-import { navLinks } from '@data/nav';
+import { navLinks, presentationVideo } from '@data/nav';
 import SiteIntro from './SiteIntro.astro';
 ---
 
 <aside class="relative hidden shrink-0 lg:block lg:w-[42%]">
-  <div class="reveal-content sticky top-0 flex h-screen max-h-screen flex-col justify-between items-center overflow-y-auto pt-22 px-12 text-center">
-    <div class="space-y-12">
+  <div class="sidebar-shell reveal-content sticky top-0 flex h-screen max-h-screen flex-col items-center justify-between overflow-y-auto overflow-x-hidden pt-22 px-8 text-center xl:px-12">
+    <div class="sidebar-content space-y-10">
       <SiteIntro variant="sidebar" />
-
-      <nav aria-label="Primary">
+      <a href={`${import.meta.env.BASE_URL}${presentationVideo.href.replace(/^\//, '')}`} target="_blank" rel="noreferrer" class="presentation-link">
+        <span class="play-icon" aria-hidden="true">▶</span>{presentationVideo.label}<span class="presentation-arrow" aria-hidden="true">↗</span>
+      </a>
+      <nav aria-label="Principal" class="sidebar-nav">
+        <span class="nav-caption"><i></i> EXPLORA EL PORTAFOLIO</span>
         <ul class="flex flex-col items-center gap-4">
-          {
-            navLinks.map((link) => (
-              <li>
-                <a href={`${import.meta.env.BASE_URL}${link.href}`} class="nav-link" data-section-link>
-                  <span>{link.label}</span>
-                </a>
-              </li>
-            ))
-          }
+          {navLinks.map((link, index) => (
+            <li><a href={`${import.meta.env.BASE_URL}${link.href}`} class="nav-link" data-section-link aria-current={index === 0 ? 'true' : undefined}><span class="nav-index">0{index + 1}</span><span>{link.label}</span><span class="nav-arrow" aria-hidden="true">↗</span></a></li>
+          ))}
         </ul>
       </nav>
     </div>
@@ -26,16 +23,61 @@ import SiteIntro from './SiteIntro.astro';
 </aside>
 
 <style is:global>
-  .reveal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  .sidebar-shell { position:relative; min-width:0; max-width:100%; overflow-y:auto; overflow-x:hidden; scrollbar-gutter:stable; }
+  .sidebar-shell > * { min-width:0; max-width:100%; }
+  .sidebar-content, .sidebar-nav, .sidebar-nav ul, .sidebar-nav li { min-width:0; max-width:100%; }
+  .sidebar-nav .nav-link { max-width:100%; overflow-wrap:anywhere; }
+  .sidebar-shell::before { position:absolute; top:4rem; left:50%; width:min(22rem, 90%); height:22rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 96%); border-radius:50%; content:''; transform:translateX(-50%); pointer-events:none; }
+  .sidebar-content { position:relative; z-index:1; width:100%; }
+  .presentation-link { display:inline-flex; max-width:100%; align-items:center; gap:.65rem; padding:.7rem .95rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 58%); border-radius:999px; background:color-mix(in srgb,var(--color-accent),transparent 94%); color:var(--color-accent); font-size:.84rem; font-weight:650; text-decoration:none; transition:transform 180ms ease,background 180ms ease; }
+  .presentation-link:hover { transform:translateY(-2px); background:color-mix(in srgb,var(--color-accent),transparent 88%); }
+  .play-icon { display:grid; width:1.35rem; height:1.35rem; flex:none; place-items:center; border-radius:50%; background:var(--color-accent); color:var(--color-background); font-size:.53rem; }
+  .presentation-arrow { margin-left:.15rem; font-size:.9rem; }
+  .sidebar-nav { padding-top:1.25rem; border-top:1px solid color-mix(in srgb,var(--color-subtext),transparent 88%); }
+  .nav-caption { display:flex; align-items:center; justify-content:center; gap:.45rem; margin-bottom:1rem; color:var(--color-textrain); font: .6rem var(--font-mono); letter-spacing:.16em; }
+  .nav-caption i { width:.35rem; height:.35rem; flex:none; border-radius:50%; background:var(--color-accent); }
+  .sidebar-nav .nav-link { gap:.7rem; padding:.6rem .7rem; border-radius:.6rem; font-size:.82rem; text-decoration:none; }
+  .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link-active { background:color-mix(in srgb,var(--color-accent),transparent 94%); }
+  .nav-index { color:var(--color-textrain); font: .64rem var(--font-mono); }
+  .nav-arrow { color:var(--color-accent); opacity:0; transition:opacity 180ms ease,transform 180ms ease; }
+  .sidebar-nav .nav-link:hover .nav-arrow, .sidebar-nav .nav-link-active .nav-arrow { opacity:1; transform:translate(2px,-2px); }
+  .sidebar-shell { scrollbar-width:thin; scrollbar-color:color-mix(in srgb,var(--color-accent),transparent 50%) transparent; }
+  .sidebar-shell::-webkit-scrollbar { width:7px; height:0; }
+  .sidebar-shell::-webkit-scrollbar:horizontal { display:none; }
+  .sidebar-shell::-webkit-scrollbar-thumb { border-radius:99px; background:color-mix(in srgb,var(--color-accent),transparent 50%); }
+  @media(prefers-reduced-motion:reduce) { .presentation-link,.nav-arrow { transition:none; } }
 </style>
+
+<script>
+  function initTabs() {
+    const links = Array.from(document.querySelectorAll('[data-section-link]'));
+    const panels = Array.from(document.querySelectorAll('[data-tab-panel]'));
+    if (!links.length || !panels.length) return;
+
+    const activate = (id: string) => {
+      panels.forEach((panel) => { panel.hidden = panel.id !== id; });
+      links.forEach((link) => {
+        const targetId = (link.getAttribute('href') || '').split('#')[1] || '';
+        const isActive = targetId === id;
+        link.classList.toggle('nav-link-active', isActive);
+        if (isActive) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const targetId = (link.getAttribute('href') || '').split('#')[1] || '';
+        if (!targetId) return;
+        event.preventDefault();
+        activate(targetId);
+        history.replaceState(null, '', `#${targetId}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+    const hash = window.location.hash.replace('#', '');
+    activate(panels.some((panel) => panel.id === hash) ? hash : panels[0].id);
+  }
+  initTabs();
+  document.addEventListener('astro:page-load', initTabs);
+</script>

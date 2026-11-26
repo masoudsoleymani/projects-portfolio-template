@@ -1,38 +1,34 @@
 ---
 import type { FeaturedProject } from '../../data/site';
 import ProjectCard from './ProjectCard.astro';
-import { Icon } from 'astro-icon/components';
 
 interface Props {
   projects: readonly FeaturedProject[];
+  compact?: boolean;
 }
 
-const { projects } = Astro.props;
+const { projects, compact = false } = Astro.props;
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
-const archiveHref = `${base}projects`;
 ---
 
 <section
-  id="featured-projects"
+  id="proyecto-content"
   class="mb-20 scroll-mt-24 lg:mb-28 lg:scroll-mt-8"
-  aria-labelledby="projects-heading"
+  aria-labelledby="proyecto-heading"
 >
-  <h2 id="projects-heading" class="section-heading">Featured Projects</h2>
-  <div class="space-y-20">
+  <h2 id="proyecto-heading" class="section-heading">Proyecto</h2>
+  <div class:list={[compact ? 'space-y-8' : 'space-y-20']}>
+    {projects.length === 0 && (
+      <p class="body-copy">Proyectos</p>
+    )}
     {projects.map((project) => (
-      <ProjectCard project={project} imageSrc={project.image ? `${base}${project.image}` : undefined} />
+      <ProjectCard
+        project={project}
+        imageSrc={project.image ? `${base}${project.image}` : undefined}
+        compact={compact}
+      />
     ))}
   </div>
-  <p class="mt-14">
-    <a
-      href={archiveHref}
-      class="group flex items-center gap-2 text-sm text-accent transition hover:text-slate-light"
-      data-astro-prefetch
-    >
-      View Full Project Archive
-      <Icon name="ph:arrow-right" class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-    </a>
-  </p>
 </section>

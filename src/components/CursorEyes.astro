@@ -1,0 +1,98 @@
+---
+/**
+ * CursorEyes.astro
+ * Par de ojos que siguen el cursor. Se coloca en el flujo normal del
+ * documento (por ejemplo, debajo del nombre) en lugar de fijo en pantalla.
+ *
+ * Uso: importa este componente donde quieras mostrar los ojos, por ejemplo
+ * en SiteIntro.astro justo debajo del nombre:
+ *
+ *   import CursorEyes from './CursorEyes.astro';
+ *   ...
+ *   <CursorEyes />
+ */
+---
+
+<div class="cursor-eyes" aria-hidden="true">
+  <svg viewBox="0 0 120 60" width="70" height="35">
+    <ellipse cx="30" cy="30" rx="26" ry="26" class="eye-white" />
+    <ellipse cx="90" cy="30" rx="26" ry="26" class="eye-white" />
+    <circle cx="30" cy="30" r="10" class="pupil" />
+    <circle cx="90" cy="30" r="10" class="pupil" />
+  </svg>
+</div>
+
+<style>
+  .cursor-eyes {
+    display: inline-flex;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .eye-white {
+    fill: #ffffff;
+    stroke: #111111;
+    stroke-width: 2;
+  }
+
+  .pupil {
+    fill: #111111;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .eye-white {
+      fill: #1f1f1f;
+      stroke: #ffffff;
+    }
+    .pupil {
+      fill: #ffffff;
+    }
+  }
+</style>
+
+<script>
+  function initCursorEyes() {
+    const eyeGroups = document.querySelectorAll('.cursor-eyes');
+    if (!eyeGroups.length) return;
+
+    const maxOffset = 8; // qué tanto se mueve la pupila dentro del ojo
+    const eyeCenters = [
+      { x: 30, y: 30 },
+      { x: 90, y: 30 },
+    ];
+
+    function updatePupils(mouseX: number, mouseY: number) {
+      eyeGroups.forEach((group) => {
+        const svg = group.querySelector('svg');
+        const pupils = group.querySelectorAll('.pupil');
+        if (!svg || pupils.length !== 2) return;
+
+        const rect = svg.getBoundingClientRect();
+
+        pupils.forEach((pupil, i) => {
+          const center = eyeCenters[i];
+          const eyeScreenX = rect.left + (center.x / 120) * rect.width;
+          const eyeScreenY = rect.top + (center.y / 60) * rect.height;
+
+          const dx = mouseX - eyeScreenX;
+          const dy = mouseY - eyeScreenY;
+          const angle = Math.atan2(dy, dx);
+          const distance = Math.min(maxOffset, Math.hypot(dx, dy) / 10);
+
+          const offsetX = Math.cos(angle) * distance;
+          const offsetY = Math.sin(angle) * distance;
+
+          pupil.setAttribute('cx', String(center.x + offsetX));
+          pupil.setAttribute('cy', String(center.y + offsetY));
+        });
+      });
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      updatePupils(e.clientX, e.clientY);
+    });
+  }
+
+  initCursorEyes();
+  document.addEventListener('astro:page-load', initCursorEyes);
+</script>

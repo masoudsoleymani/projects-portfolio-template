@@ -3,67 +3,58 @@ import { site } from '../../data/site';
 ---
 
 <section id="experiences" class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8" aria-labelledby="experience-heading">
-  <h2 id="experience-heading" class="section-heading">Experiences</h2>
-  <div class="space-y-4">
-    {
-      site.experiences.map((item) => (
-        <article class="scroll-stat panel-card group grid gap-4 md:grid-cols-[9rem_1fr] md:gap-6">
-          <p class="pt-1 font-mono text-xs uppercase tracking-wider text-slate">{item.period}</p>
-          <div class="space-y-3">
-            <h3 class="text-base font-semibold text-slate uppercase">
-              {item.title} · {item.company}
-            </h3>
+  <div class="section-intro">
+    <div>
+      <span class="section-eyebrow"><span class="eyebrow-dot"></span> Trayectoria</span>
+      <h2 id="experience-heading" class="section-heading">Experiencia</h2>
+    </div>
+    <span class="document-count">{String(site.experiences.length).padStart(2, '0')} <span>ETAPAS</span></span>
+  </div>
+  {site.experiences.length > 0 ? (
+    <div class="experience-list">
+      {site.experiences.map((item, index) => (
+        <article class="experience-card panel-card" style={`--item-index:${index}`}>
+          <div class="experience-marker"><span></span><time>{item.period}</time></div>
+          <div class="experience-content">
+            <span class="evidence-label">EXPERIENCIA / {String(index + 1).padStart(2, '0')}</span>
+            <h3>{item.title} <span>· {item.company}</span></h3>
             <p class="body-copy">{item.summary}</p>
-            <ul class="list-disc space-y-1 pl-5 text-sm text-slate">
-              {item.highlights.map((point) => <li>{point}</li>)}
-            </ul>
-            <ul class="flex flex-wrap gap-3 pt-1">
-              {item.tech.map((tech) => <li class="font-mono text-xs text-accent">{tech}</li>)}
-            </ul>
+            <ul class="experience-highlights">{item.highlights.map((point) => <li>{point}</li>)}</ul>
+            <ul class="experience-tags">{item.tech.map((tech) => <li>{tech}</li>)}</ul>
           </div>
         </article>
-      ))
-    }
-  </div>
+      ))}
+    </div>
+  ) : (
+    <div class="journey-card">
+      <span class="journey-orbit orbit-one"></span><span class="journey-orbit orbit-two"></span>
+      <div class="journey-icon" aria-hidden="true">✳</div>
+      <div><span class="evidence-label">EN CONSTRUCCIÓN</span><h3>Mi camino apenas comienza</h3><p>Estoy aprendiendo, experimentando y creando proyectos para convertir cada reto en una nueva experiencia.</p></div>
+      <span class="journey-signal"><i></i> ABIERTO A APRENDER</span>
+    </div>
+  )}
 </section>
 
 <style>
-  .scroll-stat {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .scroll-stat.reveal {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  .experience-list { display:grid; gap:1rem; }
+  .experience-card { display:grid; gap:1rem; animation:experience-enter 550ms both; animation-delay:calc(var(--item-index,0) * 80ms); }
+  .experience-marker { display:flex; align-items:center; gap:.65rem; color:var(--color-accent); font: .66rem var(--font-mono); }
+  .experience-marker span { width:.55rem; height:.55rem; border-radius:50%; background:var(--color-accent); box-shadow:0 0 14px color-mix(in srgb,var(--color-accent),transparent 20%); }
+  .experience-content h3 { margin:.55rem 0; color:var(--color-maintext); font:650 1.05rem var(--font-heading); }
+  .experience-content h3 span { color:var(--color-accent); }
+  .experience-highlights { display:grid; gap:.45rem; padding-left:1.1rem; color:var(--color-subtext); font-size:.85rem; }
+  .experience-highlights li::marker { color:var(--color-accent); }
+  .experience-tags { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; }
+  .experience-tags li { padding:.3rem .55rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 75%); border-radius:999px; color:var(--color-accent); font: .62rem var(--font-mono); }
+  .journey-card { position:relative; display:flex; align-items:center; gap:1rem; overflow:hidden; min-height:9rem; padding:1.35rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 70%); border-radius:1rem; background:linear-gradient(120deg,color-mix(in srgb,var(--color-accent),transparent 93%),color-mix(in srgb,var(--color-background),transparent 5%)); }
+  .journey-icon { z-index:1; display:grid; width:3.2rem; height:3.2rem; flex:none; place-items:center; border:1px solid color-mix(in srgb,var(--color-accent),transparent 55%); border-radius:1rem; color:var(--color-accent); font-size:1.35rem; box-shadow:0 0 25px color-mix(in srgb,var(--color-accent),transparent 88%); }
+  .journey-card h3 { margin:.35rem 0; color:var(--color-maintext); font:650 1.05rem var(--font-heading); }
+  .journey-card p { max-width:32rem; margin:0; color:var(--color-subtext); font-size:.84rem; line-height:1.6; }
+  .journey-signal { z-index:1; display:inline-flex; align-items:center; gap:.45rem; margin-left:auto; color:var(--color-accent); font: .55rem var(--font-mono); white-space:nowrap; }
+  .journey-signal i { width:.42rem; height:.42rem; border-radius:50%; background:var(--color-accent); box-shadow:0 0 10px var(--color-accent); }
+  .journey-orbit { position:absolute; right:3rem; width:8rem; height:8rem; border:1px solid color-mix(in srgb,var(--color-accent),transparent 90%); border-radius:50%; pointer-events:none; }
+  .orbit-one { transform:scale(1.4); }.orbit-two { transform:scale(2); }
+  @keyframes experience-enter { from {opacity:0;transform:translateY(12px)} to {opacity:1;transform:translateY(0)} }
+  @media(max-width:640px) { .journey-card { align-items:flex-start; flex-wrap:wrap; }.journey-signal { margin-left:4.2rem; } }
+  @media(prefers-reduced-motion:reduce) { .experience-card { animation:none; } }
 </style>
-
-<script>
-  function revealCards() {
-    const cards = document.querySelectorAll('.scroll-stat');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = Array.from(cards).indexOf(entry.target);
-          setTimeout(() => {
-            entry.target.classList.add('reveal');
-          }, (index % 3) * 150); 
-          
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -10px 0px'
-    });
-
-    cards.forEach(card => observer.observe(card));
-  }
-
-  revealCards();
-  
-  document.addEventListener('astro:after-swap', revealCards);
-</script>

@@ -1,17 +1,95 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import About from '../components/About.astro';
-import Footer from '../components/Footer.astro';
-import FeaturedProjects from '../components/FeaturedProjects.astro';
 import Experience from '../components/Experience.astro';
+import Modelado from '../components/Modelado.astro';
+import Normalizacion from '../components/Normalizacion.astro';
+import Sql from '../components/Sql.astro';
+import Proyecto from '../components/Proyecto.astro';
+import Footer from '../components/Footer.astro';
 import { site } from '../../data/site';
 
-const projects = site.featuredProjects;
 ---
 
 <Layout title={site.meta.title} description={site.meta.description}>
-  <About />
-  <Experience />
-  <FeaturedProjects projects={projects} />
+  <div id="about" data-tab-panel>
+    <About />
+    <Experience />
+  </div>
+
+  <div id="modelado" data-tab-panel hidden>
+    <Modelado />
+  </div>
+
+  <div id="normalizacion" data-tab-panel hidden>
+    <Normalizacion />
+  </div>
+
+  <div id="sql" data-tab-panel hidden>
+    <Sql />
+  </div>
+
+  <div id="proyecto" data-tab-panel hidden>
+    <Proyecto />
+  </div>
+
   <Footer />
 </Layout>
+
+<style is:global>
+  @media (min-width: 1024px) {
+    .sidebar-shell {
+      transform: translateX(-3.5rem);
+      align-items: flex-start;
+      padding-right: 1.5rem;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .sidebar-content {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .sidebar-content > div.flex.flex-col.items-center,
+    .sidebar-content > .presentation-link,
+    .sidebar-nav {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .sidebar-content > .presentation-link {
+      margin-left: 0;
+    }
+
+    .sidebar-nav {
+      width: 100%;
+    }
+
+    .sidebar-nav .nav-caption {
+      justify-content: flex-start;
+    }
+
+    .sidebar-nav ul {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(max-content, 1fr));
+      align-items: start;
+      justify-items: start;
+      gap: 0.25rem;
+      width: 100%;
+    }
+
+    .sidebar-nav li,
+    .sidebar-nav .nav-link {
+      width: 100%;
+    }
+
+    .sidebar-nav .nav-link {
+      display: inline-flex;
+      justify-content: flex-start;
+      gap: 0.25rem;
+      padding: 0.5rem 0.25rem;
+      white-space: nowrap;
+    }
+  }
+</style>
