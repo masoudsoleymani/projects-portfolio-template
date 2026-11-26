@@ -3,6 +3,9 @@ import { site } from '@data/site';
 
 const section = site.evidences.proyecto;
 const links = section.links ?? [];
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <section
@@ -10,77 +13,283 @@ const links = section.links ?? [];
   class="mb-24 scroll-mt-24 lg:mb-32 lg:scroll-mt-8"
   aria-labelledby="proyecto-heading"
 >
-  <h2 id="proyecto-heading" class="section-heading">{section.title}</h2>
+  <div class="section-intro">
+    <div>
+      <span class="section-eyebrow"><span class="eyebrow-dot"></span> Archivo del proyecto</span>
+      <h2 id="proyecto-heading" class="section-heading">{section.title}</h2>
+    </div>
+    <span class="document-count" aria-label={`${links.length} documentos`}>{String(links.length).padStart(2, '0')} <span>DOCUMENTOS</span></span>
+  </div>
 
   <div class="reveal-content mt-8 space-y-6">
-    <div class="body-copy">
+    <div class="body-copy project-description">
       {section.paragraphs.map((p) => (
         <p>{p}</p>
       ))}
     </div>
 
     {links.length > 0 && (
-      <div class="link-stack">
-        {links.map((link) => (
-          <div class="link-item">
-            <h3 class="link-title">{link.title}</h3>
-            <p class="link-description">{link.description}</p>
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-block text-blue-600 underline hover:text-blue-800"
-            >
-              {link.title}
-            </a>
-          </div>
-        ))}
+      <div class="document-grid">
+        {links.map((link, index) => {
+          const isPdf = link.url.toLowerCase().split('?')[0].endsWith('.pdf');
+          const previewUrl = `${base}${link.url.replace(/^\/+/, '')}#page=1&view=FitH&toolbar=0&navpanes=0`;
+
+          return (
+            <article class="document-card" style={`--card-index: ${index};`}>
+              <div class="document-preview">
+                <span class="preview-corner" aria-hidden="true"></span>
+                {isPdf ? (
+                  <iframe
+                    src={previewUrl}
+                    title={`Vista previa de ${link.title}`}
+                    loading="lazy"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  ></iframe>
+                ) : (
+                  <div class="preview-placeholder" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" fill="none">
+                      <path d="M13 5.75h15l8 8V42H13V5.75Z" />
+                      <path d="M28 6v9h9M19 24h11M19 30h11M19 36h7" />
+                    </svg>
+                    <span>Archivo</span>
+                  </div>
+                )}
+                <span class="file-type">{isPdf ? 'PDF' : 'ARCHIVO'}</span>
+                <span class="document-index">{String(index + 1).padStart(2, '0')}</span>
+              </div>
+
+              <div class="document-info">
+                <h3>{link.title}</h3>
+                <p>{link.description}</p>
+                <a href={link.url} target="_blank" rel="noopener noreferrer" class="document-link">
+                  <span>{isPdf ? 'Abrir documento' : 'Ver evidencia'}</span>
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M4.5 10h10m-4-4 4 4-4 4" />
+                  </svg>
+                </a>
+              </div>
+            </article>
+          );
+        })}
       </div>
     )}
   </div>
 </section>
 
 <style is:global>
-  .reveal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  .section-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-subtext), transparent 82%);
   }
 
-  .link-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 1.5rem;
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.65rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
   }
 
-  .link-item {
-    display: flex;
-    flex-direction: column;
+  .eyebrow-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent), transparent 20%);
+  }
+
+  .document-count {
+    display: inline-flex;
+    align-items: baseline;
     gap: 0.5rem;
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    background: rgba(15, 23, 42, 0.35);
-    border-radius: 0.75rem;
-    padding: 1rem 1.1rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent), transparent 72%);
+    border-radius: 999px;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    white-space: nowrap;
   }
 
-  .link-title {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #f8fafc;
+  .document-count span {
+    color: var(--color-subtext);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
   }
 
-  .link-description {
+  .document-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 1.15rem;
+    margin-top: 1.75rem;
+  }
+
+  .document-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-subtext), transparent 84%);
+    border-radius: 1rem;
+    background: linear-gradient(145deg,
+      color-mix(in srgb, var(--color-maintext), transparent 96%),
+      color-mix(in srgb, var(--color-background), transparent 4%));
+    box-shadow: 0 12px 32px rgb(0 0 0 / 16%);
+    transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+    animation: document-enter 600ms both;
+    animation-delay: calc(var(--card-index, 0) * 55ms);
+  }
+
+  .document-card:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--color-accent), transparent 48%);
+    box-shadow: 0 20px 40px rgb(0 0 0 / 25%), 0 0 24px color-mix(in srgb, var(--color-accent), transparent 92%);
+  }
+
+  .document-preview {
+    position: relative;
+    height: 12.5rem;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--color-accent), transparent 91%), transparent 62%),
+      color-mix(in srgb, var(--color-background), white 5%);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-subtext), transparent 86%);
+  }
+
+  .document-preview::after {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border: 1px solid color-mix(in srgb, white, transparent 95%);
+    content: '';
+    pointer-events: none;
+  }
+
+  .document-preview iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .preview-corner {
+    position: absolute;
+    z-index: 2;
+    top: -3.2rem;
+    right: -2.5rem;
+    width: 7rem;
+    height: 7rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent), transparent 72%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.8rem color-mix(in srgb, var(--color-accent), transparent 96%),
+      0 0 0 1.7rem color-mix(in srgb, var(--color-accent), transparent 98%);
+    pointer-events: none;
+  }
+
+  .file-type,
+  .document-index {
+    position: absolute;
+    z-index: 2;
+    bottom: 0.75rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent), transparent 70%);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-background), transparent 12%);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    backdrop-filter: blur(8px);
+  }
+
+  .file-type { left: 0.75rem; }
+  .document-index { right: 0.75rem; color: var(--color-subtext); }
+
+  .preview-placeholder {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-content: center;
+    justify-items: center;
+    gap: 0.5rem;
+    color: var(--color-subtext);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .preview-placeholder svg {
+    width: 3rem;
+    stroke: var(--color-accent);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+  }
+
+  .document-info { padding: 1rem 1rem 1.1rem; }
+
+  .document-info h3 {
     margin: 0;
-    color: #cbd5e1;
+    color: var(--color-maintext);
+    font-family: var(--font-heading);
+    font-size: 0.98rem;
+    font-weight: 650;
+    line-height: 1.45;
+  }
+
+  .document-info p {
+    min-height: 3.2em;
+    margin: 0.55rem 0 0;
+    color: var(--color-subtext);
+    font-size: 0.82rem;
     line-height: 1.6;
   }
 
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .document-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.95rem;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: gap 180ms ease;
+  }
+
+  .document-link:hover { gap: 0.7rem; }
+
+  .document-link svg {
+    width: 1rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  @keyframes document-enter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .section-intro { align-items: center; }
+    .document-count { font-size: 0.75rem; }
+    .document-count span { font-size: 0.48rem; }
+    .document-preview { height: 14rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .document-card { animation: none; transition: none; }
+    .document-card:hover { transform: none; }
   }
 </style>
