@@ -39,14 +39,29 @@ import { site } from '../../data/site';
 <style is:global>
   @media (min-width: 1024px) {
     .sidebar-shell {
-      transform: translateX(-1.5rem);
+      transform: translateX(-3.5rem);
       align-items: flex-start;
-      padding-right: 1rem;
-      padding-left: 1rem;
+      padding-right: 1.5rem;
+      padding-left: 0;
       text-align: left;
     }
 
-    .sidebar-content,
+    .sidebar-content {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .sidebar-content > div.flex.flex-col.items-center,
+    .sidebar-content > .presentation-link,
+    .sidebar-nav {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .sidebar-content > .presentation-link {
+      margin-left: 0;
+    }
+
     .sidebar-nav {
       width: 100%;
     }
@@ -56,19 +71,24 @@ import { site } from '../../data/site';
     }
 
     .sidebar-nav ul {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: flex-start;
-      gap: 0.35rem;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(max-content, 1fr));
+      align-items: start;
+      justify-items: start;
+      gap: 0.25rem;
+      width: 100%;
     }
 
-    .sidebar-nav li {
-      flex: 0 1 auto;
+    .sidebar-nav li,
+    .sidebar-nav .nav-link {
+      width: 100%;
     }
 
     .sidebar-nav .nav-link {
-      gap: 0.35rem;
-      padding: 0.5rem 0.45rem;
+      display: inline-flex;
+      justify-content: flex-start;
+      gap: 0.25rem;
+      padding: 0.5rem 0.25rem;
       white-space: nowrap;
     }
   }
